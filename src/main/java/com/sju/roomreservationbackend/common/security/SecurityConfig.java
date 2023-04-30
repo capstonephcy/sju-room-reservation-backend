@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.security;
+package com.sju.roomreservationbackend.common.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

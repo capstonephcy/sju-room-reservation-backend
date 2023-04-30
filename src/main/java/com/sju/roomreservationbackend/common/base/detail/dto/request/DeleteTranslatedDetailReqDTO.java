@@ -1,8 +1,8 @@
-package com.dmtlabs.aidocentserver.global.base.detail.dto.request;
+package com.sju.roomreservationbackend.common.base.detail.dto.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Data
 public class DeleteTranslatedDetailReqDTO {

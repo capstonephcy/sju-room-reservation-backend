@@ -1,10 +1,10 @@
-package com.dmtlabs.aidocentserver.global.email;
+package com.sju.roomreservationbackend.common.email;
 
-import com.dmtlabs.aidocentserver.global.tempcode.TempCodeGenerator;
+import com.sju.roomreservationbackend.common.tempcode.TempCodeGenerator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -16,7 +16,7 @@ public class EmailVerifyServ implements EmailVerifyServObservable {
     @Transactional
     public String createAuthCode(String email) {
         // 이메일 인증요청 리스트에 새로운 인증요청정보 추가
-        char[] authCodeCharSet = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        char[] authCodeCharSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
         String authCode = TempCodeGenerator.generate(authCodeCharSet, 8);
 
         // 해당 이메일로 기존에 발송한 인증코드가 있을 경우 무효화

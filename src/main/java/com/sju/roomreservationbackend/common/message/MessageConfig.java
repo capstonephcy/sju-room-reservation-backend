@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.message;
+package com.sju.roomreservationbackend.common.message;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ public class MessageConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver() {
-        SessionLocaleResolver localResolver=new SessionLocaleResolver();
+        SessionLocaleResolver localResolver = new SessionLocaleResolver();
         localResolver.setDefaultLocale(Locale.US);
         return localResolver;
     }

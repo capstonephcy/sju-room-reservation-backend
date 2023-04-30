@@ -1,13 +1,13 @@
-package com.dmtlabs.aidocentserver.global.base.media.dto.request;
+package com.sju.roomreservationbackend.common.base.media.dto.request;
 
-import com.dmtlabs.aidocentserver.global.http.GeneralResDTO;
+import com.sju.roomreservationbackend.common.http.GeneralResDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Data

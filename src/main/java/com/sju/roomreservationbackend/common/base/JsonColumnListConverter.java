@@ -1,10 +1,10 @@
-package com.dmtlabs.aidocentserver.global.base;
+package com.sju.roomreservationbackend.common.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import java.util.List;
 
 @Converter
@@ -27,7 +27,8 @@ public class JsonColumnListConverter<T> implements AttributeConverter<List<T>, S
     @Override
     public List<T> convertToEntityAttribute(String jsonColumnStr) {
         try {
-            return objectMapper.readValue(jsonColumnStr, new TypeReference<>() {});
+            return objectMapper.readValue(jsonColumnStr, new TypeReference<>() {
+            });
         } catch (Exception e) {
             return null;
         }

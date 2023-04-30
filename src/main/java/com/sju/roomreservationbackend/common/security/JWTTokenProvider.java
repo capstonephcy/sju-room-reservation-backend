@@ -1,10 +1,9 @@
-package com.dmtlabs.aidocentserver.global.security;
+package com.sju.roomreservationbackend.common.security;
 
-import com.dmtlabs.aidocentserver.aspect.users.profiles.entity.enums.Permission;
-import com.dmtlabs.aidocentserver.aspect.users.profiles.entity.enums.ServiceArea;
-import com.dmtlabs.aidocentserver.aspect.users.profiles.entity.UserProfile;
-import com.dmtlabs.aidocentserver.aspect.users.auths.services.UserAuthServ;
-import io.jsonwebtoken.*;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

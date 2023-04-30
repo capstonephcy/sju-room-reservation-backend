@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.email;
+package com.sju.roomreservationbackend.common.email;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
@@ -6,11 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 
-import static com.dmtlabs.aidocentserver.global.email.QEmailVerifyLog.emailVerifyLog;
+import static com.sju.roomreservationbackend.common.email.QEmailVerifyLog.emailVerifyLog;
 
 @Repository
 @AllArgsConstructor
-public class EmailVerifyRepoImpl implements EmailVerifyDslRepo{
+public class EmailVerifyRepoImpl implements EmailVerifyDslRepo {
     private JPAQueryFactory queryFactory;
 
     @Override

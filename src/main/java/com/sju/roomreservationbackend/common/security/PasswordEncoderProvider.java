@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.security;
+package com.sju.roomreservationbackend.global.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,9 +1,9 @@
-package com.dmtlabs.aidocentserver.global.security;
+package com.sju.roomreservationbackend.common.security;
 
-import com.dmtlabs.aidocentserver.global.http.DTOMetadata;
+import com.sju.roomreservationbackend.common.http.DTOMetadata;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /* 스프링 시큐리티 에러시 반환값 만들어주는 클래스 */
 public class SecurityResponseManager {

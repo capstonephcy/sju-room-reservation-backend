@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.email;
+package com.sju.roomreservationbackend.common.email;
 
 public interface EmailVerifyServObservable {
     void checkEmailVerified(String email) throws Exception;
