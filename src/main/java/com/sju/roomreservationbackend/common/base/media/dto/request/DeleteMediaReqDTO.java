@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.base.media.dto.request;
+package com.sju.roomreservationbackend.common.base.media.dto.request;
 
 import lombok.Data;
 

@@ -1,13 +1,16 @@
-package com.dmtlabs.aidocentserver.global.base.detail;
+package com.sju.roomreservationbackend.common.base.detail;
 
-import com.dmtlabs.aidocentserver.global.base.SupportedLocale;
-import lombok.*;
+import com.sju.roomreservationbackend.common.base.SupportedLocale;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Locale;
 
 @Getter

@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.tempcode;
+package com.sju.roomreservationbackend.common.tempcode;
 
 import java.security.SecureRandom;
 import java.util.Date;

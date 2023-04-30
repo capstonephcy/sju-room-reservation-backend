@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.storage;
+package com.sju.roomreservationbackend.common.storage;
 
 public enum FileType {
     MEDIA_AUDIO("MEDIA_AUDIO"),
@@ -8,6 +8,7 @@ public enum FileType {
     GEO_JSON("GEO_JSON");
 
     private final String value;
+
     FileType(String value) {
         this.value = value;
     }

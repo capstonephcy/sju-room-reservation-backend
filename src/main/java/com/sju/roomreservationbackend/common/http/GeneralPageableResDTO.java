@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.http;
+package com.sju.roomreservationbackend.common.http;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

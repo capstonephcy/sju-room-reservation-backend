@@ -1,8 +1,8 @@
-package com.dmtlabs.aidocentserver.global.security;
+package com.sju.roomreservationbackend.common.security;
 
 import lombok.NonNull;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 public class JWTFilterRules {

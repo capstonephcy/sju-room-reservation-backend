@@ -1,8 +1,8 @@
-package com.dmtlabs.aidocentserver.global.email;
+package com.sju.roomreservationbackend.common.email;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

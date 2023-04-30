@@ -1,8 +1,8 @@
-package com.dmtlabs.aidocentserver.global.exception.handler;
+package com.sju.roomreservationbackend.common.exception.handler;
 
-import com.dmtlabs.aidocentserver.global.http.DTOMetadata;
-import com.dmtlabs.aidocentserver.global.http.GeneralResDTO;
-import com.dmtlabs.aidocentserver.global.message.MessageConfig;
+import com.sju.roomreservationbackend.common.http.DTOMetadata;
+import com.sju.roomreservationbackend.common.http.GeneralResDTO;
+import com.sju.roomreservationbackend.common.message.MessageConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.MessageSource;

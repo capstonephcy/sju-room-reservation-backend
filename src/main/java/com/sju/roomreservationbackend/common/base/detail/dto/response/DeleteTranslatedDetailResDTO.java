@@ -1,6 +1,6 @@
-package com.dmtlabs.aidocentserver.global.base.detail.dto.response;
+package com.sju.roomreservationbackend.common.base.detail.dto.response;
 
-import com.dmtlabs.aidocentserver.global.http.GeneralResDTO;
+import com.sju.roomreservationbackend.common.http.GeneralResDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

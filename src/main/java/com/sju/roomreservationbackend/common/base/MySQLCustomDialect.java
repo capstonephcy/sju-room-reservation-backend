@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.base;
+package com.sju.roomreservationbackend.common.base;
 
 import org.hibernate.dialect.MySQL8Dialect;
 import org.hibernate.dialect.function.StandardSQLFunction;

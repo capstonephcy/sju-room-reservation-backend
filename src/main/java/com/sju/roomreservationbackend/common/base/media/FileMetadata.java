@@ -1,16 +1,16 @@
-package com.dmtlabs.aidocentserver.global.base.media;
+package com.sju.roomreservationbackend.common.base.media;
 
-import com.dmtlabs.aidocentserver.global.storage.FileType;
+import com.sju.roomreservationbackend.common.storage.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter

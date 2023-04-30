@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.exception.objects;
+package com.sju.roomreservationbackend.common.exception.objects;
 
 /* Spring Validation 예외 객체 */
 public class DTOValidityException extends Exception {

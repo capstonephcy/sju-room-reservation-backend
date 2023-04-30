@@ -1,9 +1,10 @@
-package com.dmtlabs.aidocentserver.global.http;
+package com.sju.roomreservationbackend.common.http;
 
 import org.springframework.ui.Model;
 
 public abstract class ViewUtil {
     public abstract String onDisplay() throws Exception;
+
     public String display(Model model) {
         try {
             return onDisplay();

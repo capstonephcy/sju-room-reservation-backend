@@ -1,7 +1,7 @@
-package com.dmtlabs.aidocentserver.global.storage;
+package com.sju.roomreservationbackend.common.storage;
 
-import com.dmtlabs.aidocentserver.global.base.media.FileMetadata;
-import com.dmtlabs.aidocentserver.global.message.MessageConfig;
+import com.sju.roomreservationbackend.common.base.media.FileMetadata;
+import com.sju.roomreservationbackend.common.message.MessageConfig;
 import lombok.Getter;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +9,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,10 +31,10 @@ public class StorageService {
 
     // 확장자 제한 사항
     private final String[] PHOTO_EXT = new String[]{
-            "jpg","png","jpeg", "gif", "webp"
+            "jpg", "png", "jpeg", "gif", "webp"
     };
     private final String[] VIDEO_EXT = new String[]{
-            "3gp","mp4","webm"
+            "3gp", "mp4", "webm"
     };
     private final String[] DOCUMENT_EXT = new String[]{
             "doc", "docx", "hwp", "pdf", "txt", "ppt", "pptx", "psd", "ai", "xls", "xlsx",
@@ -176,7 +177,7 @@ public class StorageService {
             );
         }
     }
-    
+
     // 공통 - 디렉터리가 존재하지 않을 경우 디렉토리 생성
     private void createDirectoryIfNotExist(Path dirPath) throws Exception {
         if (!dirPath.toFile().isDirectory()) {
@@ -210,7 +211,7 @@ public class StorageService {
             this.createDirectory(entityStoragePath);
         }
     }
-    
+
     // 공통 - 하위 엔티티 개별 디렉토리 생성
     public void createEntityStorage(Path parentEntityStoragePath, String subEntity, Long subEntityId) throws Exception {
         Path subEntityStoragePath = Paths.get(parentEntityStoragePath.toString(), subEntity, subEntity + "_" + subEntityId);
@@ -243,7 +244,7 @@ public class StorageService {
     public void deleteEntityStorage(Path parentEntityStoragePath, String subEntityName, Long subEntityId) throws Exception {
         FileUtils.deleteDirectory(this.getEntityStoragePath(parentEntityStoragePath, subEntityName, subEntityId).toFile());
     }
-    
+
     /* 코스 관련 */
 
     // 코스 삭제시 첨부파일 디렉토리 삭제 메소드

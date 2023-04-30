@@ -1,6 +1,6 @@
-package com.dmtlabs.aidocentserver.global.http;
+package com.sju.roomreservationbackend.common.http;
 
-import com.dmtlabs.aidocentserver.global.message.MessageConfig;
+import com.sju.roomreservationbackend.common.message.MessageConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.MessageSource;

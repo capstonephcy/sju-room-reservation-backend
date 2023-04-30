@@ -1,7 +1,7 @@
-package com.dmtlabs.aidocentserver.global.base.detail.service;
+package com.sju.roomreservationbackend.common.base.detail.service;
 
-import com.dmtlabs.aidocentserver.global.exception.objects.DTOValidityException;
-import com.dmtlabs.aidocentserver.global.message.MessageConfig;
+import com.sju.roomreservationbackend.common.exception.objects.DTOValidityException;
+import com.sju.roomreservationbackend.common.message.MessageConfig;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ public class PageValidateServ {
     public void checkPageSize(int pageSize) throws DTOValidityException {
         if (pageSize > 1000) {
             throw new DTOValidityException(
-                    msgSrc.getMessage("valid.page.size", new String[]{"1000"} , Locale.ENGLISH)
+                    msgSrc.getMessage("valid.page.size", new String[]{"1000"}, Locale.ENGLISH)
             );
         }
     }

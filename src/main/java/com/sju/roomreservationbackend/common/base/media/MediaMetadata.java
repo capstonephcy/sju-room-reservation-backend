@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.base.media;
+package com.sju.roomreservationbackend.common.base.media;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 @Getter
 @Setter

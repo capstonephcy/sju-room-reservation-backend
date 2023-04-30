@@ -1,7 +1,6 @@
-package com.dmtlabs.aidocentserver.global.security;
+package com.sju.roomreservationbackend.common.security;
 
-import com.dmtlabs.aidocentserver.aspect.users.profiles.entity.UserProfile;
-import com.dmtlabs.aidocentserver.aspect.users.profiles.repository.UserProfileRepo;
+import com.sju.roomreservationbackend.domain.user.entity.UserProfile;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,10 +26,10 @@ public class JWTAuthenticationProvider implements AuthenticationProvider {
         UserProfile profile = userProfileRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
 
-        if(pwEncoder.matches(profile.getPassword(), password)) {
+        if (pwEncoder.matches(profile.getPassword(), password)) {
             throw new BadCredentialsException("Wrong password");
         }
-        if(!profile.isAccountNonLocked()) {
+        if (!profile.isAccountNonLocked()) {
             throw new BadCredentialsException("User not verified");
         }
 

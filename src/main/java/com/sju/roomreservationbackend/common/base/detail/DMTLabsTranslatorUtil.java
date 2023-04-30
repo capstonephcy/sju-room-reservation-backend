@@ -1,7 +1,6 @@
-package com.dmtlabs.aidocentserver.global.base.detail;
+package com.sju.roomreservationbackend.common.base.detail;
 
-import com.dmtlabs.aidocentserver.aspect.exhibitions.details.dto.TranslateText;
-import com.dmtlabs.aidocentserver.global.base.SupportedLocale;
+import com.sju.roomreservationbackend.common.base.SupportedLocale;
 import com.google.gson.JsonObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;

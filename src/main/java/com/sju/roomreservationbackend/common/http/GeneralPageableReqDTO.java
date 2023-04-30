@@ -1,8 +1,8 @@
-package com.dmtlabs.aidocentserver.global.http;
+package com.sju.roomreservationbackend.common.http;
 
 import lombok.Data;
 
-import javax.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Data
 public class GeneralPageableReqDTO {

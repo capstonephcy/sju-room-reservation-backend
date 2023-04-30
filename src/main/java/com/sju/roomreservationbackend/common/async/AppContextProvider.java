@@ -1,11 +1,11 @@
-package com.dmtlabs.aidocentserver.global.async;
+package com.sju.roomreservationbackend.common.async;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.NonNull;
 
-public class AppContextProvider implements ApplicationContextAware{
+public class AppContextProvider implements ApplicationContextAware {
 
     private static ApplicationContext context;
 

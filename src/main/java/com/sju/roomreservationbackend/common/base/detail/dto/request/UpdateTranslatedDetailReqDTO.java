@@ -1,20 +1,20 @@
-package com.dmtlabs.aidocentserver.global.base.detail.dto.request;
+package com.sju.roomreservationbackend.common.base.detail.dto.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Data
 public class UpdateTranslatedDetailReqDTO {
-    @NotNull(message="valid.detail.id.null")
+    @NotNull(message = "valid.detail.id.null")
     @PositiveOrZero(message = "valid.detail.id.positive")
     protected Long id;
 
-    @NotBlank(message="valid.detail.name.blank")
-    @Size(max=200, message="valid.detail.name.size")
+    @NotBlank(message = "valid.detail.name.blank")
+    @Size(max = 200, message = "valid.detail.name.size")
     protected String name;
 
     @NotBlank(message = "valid.detail.author.blank")

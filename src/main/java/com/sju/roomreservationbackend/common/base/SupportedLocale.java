@@ -1,4 +1,4 @@
-package com.dmtlabs.aidocentserver.global.base;
+package com.sju.roomreservationbackend.common.base;
 
 import java.util.Locale;
 
@@ -16,9 +16,11 @@ public enum SupportedLocale {
     vi("vi");
 
     private final String value;
+
     SupportedLocale(String value) {
         this.value = value;
     }
+
     public String getValue() {
         return value;
     }
