@@ -58,3 +58,9 @@ hs_err_pid*
 replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij
+
+# Properties
+application-dev-krapie.properties
+
+# Misc
+.DS_Store
