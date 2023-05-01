@@ -34,11 +34,7 @@ public class MessageConfig implements WebMvcConfigurer {
         ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
         msgSrc.setBasenames(
                 "messages/global/validation",
-                "messages/users/validation",
-                "messages/places/validation",
-                "messages/exhibitions/validation",
-                "messages/courses/validation",
-                "messages/tours/validation"
+                "messages/users/validation"
         );
         return msgSrc;
     }
@@ -47,11 +43,7 @@ public class MessageConfig implements WebMvcConfigurer {
     public static MessageSource getResponseMsgSrc() {
         ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
         msgSrc.setBasenames(
-                "messages/users/response",
-                "messages/places/response",
-                "messages/exhibitions/response",
-                "messages/courses/response",
-                "messages/tours/response"
+                "messages/users/response"
         );
         return msgSrc;
     }
@@ -76,54 +68,6 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/users/validation",
                 "messages/users/response",
                 "messages/users/error"
-        );
-        return msgSrc;
-    }
-
-    @Bean
-    public static MessageSource getCourseMsgSrc() {
-        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
-        msgSrc.setBasenames(
-                "messages/global/validation",
-                "messages/courses/validation",
-                "messages/courses/response",
-                "messages/courses/error"
-        );
-        return msgSrc;
-    }
-
-    @Bean
-    public static MessageSource getPlaceMsgSrc() {
-        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
-        msgSrc.setBasenames(
-                "messages/global/validation",
-                "messages/places/validation",
-                "messages/places/response",
-                "messages/places/error"
-        );
-        return msgSrc;
-    }
-
-    @Bean
-    public static MessageSource getTourMsgSrc() {
-        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
-        msgSrc.setBasenames(
-                "messages/global/validation",
-                "messages/tours/validation",
-                "messages/tours/response",
-                "messages/tours/error"
-        );
-        return msgSrc;
-    }
-
-    @Bean
-    public static MessageSource getExhibitionMsgSrc() {
-        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
-        msgSrc.setBasenames(
-                "messages/global/validation",
-                "messages/exhibitions/validation",
-                "messages/exhibitions/response",
-                "messages/exhibitions/error"
         );
         return msgSrc;
     }

@@ -2,8 +2,7 @@ package com.sju.roomreservationbackend.domain.reservation.profile.entity;
 
 import com.sju.roomreservationbackend.domain.reservation.regular.entity.RegularRev;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
-import com.sju.roomreservationbackend.domain.user.entity.UserProfile;
-import jakarta.persistence.*;
+import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

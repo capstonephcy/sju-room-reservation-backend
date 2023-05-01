@@ -1,6 +1,7 @@
 package com.sju.roomreservationbackend.common.security;
 
-import com.sju.roomreservationbackend.domain.user.entity.UserProfile;
+import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
+import com.sju.roomreservationbackend.domain.user.profile.repository.UserProfileRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
