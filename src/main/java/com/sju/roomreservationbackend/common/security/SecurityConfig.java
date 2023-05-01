@@ -36,11 +36,11 @@ public class SecurityConfig {
                 .httpBasic().disable();
 
         // 접근 권한 관리
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, JWTFilterRules.getExcludesByHttpMethod("GET")).permitAll()
-                .antMatchers(HttpMethod.POST, JWTFilterRules.getExcludesByHttpMethod("POST")).permitAll()
-                .antMatchers(HttpMethod.PUT, JWTFilterRules.getExcludesByHttpMethod("PUT")).permitAll()
-                .antMatchers(HttpMethod.DELETE, JWTFilterRules.getExcludesByHttpMethod("DELETE")).permitAll()
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, JWTFilterRules.getExcludesByHttpMethod("GET")).permitAll()
+                .requestMatchers(HttpMethod.POST, JWTFilterRules.getExcludesByHttpMethod("POST")).permitAll()
+                .requestMatchers(HttpMethod.PUT, JWTFilterRules.getExcludesByHttpMethod("PUT")).permitAll()
+                .requestMatchers(HttpMethod.DELETE, JWTFilterRules.getExcludesByHttpMethod("DELETE")).permitAll()
                 .anyRequest().authenticated();
 
         // JWT 적용

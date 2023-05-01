@@ -1,6 +1,9 @@
 package com.sju.roomreservationbackend.common.security;
 
 
+import com.sju.roomreservationbackend.domain.user.auth.services.UserAuthServ;
+import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
+import com.sju.roomreservationbackend.domain.user.profile.entity.Permission;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +12,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -51,12 +55,11 @@ public class JWTTokenProvider {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    public String createToken(String id, List<Permission> roles, ServiceArea service) {
+    public String createToken(String id, List<Permission> roles) {
         // JWT payload 에 저장되는 정보단위, 보통 여기서 user 를 식별하는 값을 넣는다 (claim 의 주체)
         Claims claims = Jwts.claims().setSubject(id);
         // 권한 정보 삽입
         claims.put("roles", roles);
-        claims.put("service", service);
 
         return doCreateToken(id, claims);
     }

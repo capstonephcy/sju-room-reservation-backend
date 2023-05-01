@@ -1,7 +1,7 @@
 package com.sju.roomreservationbackend.domain.reservation.regular.entity;
 
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
-import com.sju.roomreservationbackend.domain.user.entity.UserProfile;
+import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

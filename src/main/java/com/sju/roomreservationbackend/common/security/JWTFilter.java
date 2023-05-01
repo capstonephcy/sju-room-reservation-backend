@@ -1,5 +1,6 @@
 package com.sju.roomreservationbackend.common.security;
 
+import com.sju.roomreservationbackend.domain.user.auth.services.UserAuthServ;
 import lombok.NonNull;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -91,12 +92,5 @@ public class JWTFilter extends OncePerRequestFilter {
     // 검증하지 않을 예외 조건
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         return JWTFilterRules.getExcludesByRequest(request);
-    }
-
-    private void removeCookie(HttpServletResponse response) {
-        Cookie emptyAuthCookie = new Cookie("Authorization", null);
-        emptyAuthCookie.setMaxAge(0);
-        emptyAuthCookie.setPath("/");
-        response.addCookie(emptyAuthCookie);
     }
 }
