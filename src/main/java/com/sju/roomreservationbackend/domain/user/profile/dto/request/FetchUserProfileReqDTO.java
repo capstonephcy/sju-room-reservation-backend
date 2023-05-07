@@ -1,10 +1,9 @@
 package com.sju.roomreservationbackend.domain.user.profile.dto.request;
 
 import com.sju.roomreservationbackend.domain.user.profile.entity.Permission;
-import lombok.Data;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Data
 public class FetchUserProfileReqDTO {

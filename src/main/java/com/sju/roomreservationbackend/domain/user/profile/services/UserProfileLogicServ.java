@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -17,16 +15,21 @@ public class UserProfileLogicServ implements UserProfileServCommon {
     protected final UserProfileRepo userProfileRepo;
     protected final PasswordEncoder pwEncoder;
 
-    protected List<Permission> grantUserPerm() {
-        List<Permission> perms = new ArrayList<>();
-        perms.add(Permission.STUDENT);
-        return perms;
+    protected void checkPermissionIsValid(Permission permission) throws Exception {
+        if (permission == Permission.ROOT_ADMIN) {
+            throw new Exception(
+                    userMsgSrc.getMessage("error.user.unique.superuser", null, Locale.ENGLISH)
+            );
+        }
     }
 
-    protected List<Permission> grantAdminPerm() {
-        List<Permission> perms = new ArrayList<>();
-        perms.add(Permission.ADMIN);
-        return perms;
+    protected void checkUsernameDuplication(String username) throws Exception {
+        // 사용자 로그인 유저네임 중복 확인
+        if (username != null && userProfileRepo.existsByUsername(username)) {
+            throw new DTOValidityException(
+                    userMsgSrc.getMessage("error.user.dup.username",null, Locale.ENGLISH)
+            );
+        }
     }
 
     protected void checkEmailDuplication(String email) throws Exception {

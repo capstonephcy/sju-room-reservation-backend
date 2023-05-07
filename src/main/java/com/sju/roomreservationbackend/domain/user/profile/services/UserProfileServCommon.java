@@ -10,7 +10,7 @@ public interface UserProfileServCommon {
     MessageSource userMsgSrc = MessageConfig.getUserMsgSrc();
 
     // Common utility function for handling User Profile
-    // Restriction: The code which has to be dependent with repository can't placed here.
+    // Restriction: The code which has to be dependent with repository can't place here.
     default UserProfile fetchCurrentUser(Authentication auth) {
         return (UserProfile) auth.getPrincipal();
     }
