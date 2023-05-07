@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Size;
 @Data
 public class UpdateUserPasswordReqDTO {
     @NotBlank(message = "valid.user.password.blank")
-    @Size(min = 8, max = 20, message = "valid.user.password.size")
-    String password;
+    @Size(min=6, max=20, message = "valid.user.password.size")
+    private String password;
     @NotBlank(message = "valid.user.password.blank")
-    @Size(min = 8, max = 20, message = "valid.user.password.size")
-    String newPassword;
+    @Size(min=6, max=20, message = "valid.user.password.size")
+    private String newPassword;
 }

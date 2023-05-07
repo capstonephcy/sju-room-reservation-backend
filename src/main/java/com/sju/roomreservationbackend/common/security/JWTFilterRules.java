@@ -9,17 +9,9 @@ public class JWTFilterRules {
     public static final String[] EXCLUDE_RULES = {
             "GET|/storage/**",
             "GET|/static/**",
-            "GET|/admin",
-            "GET|/error/**",
-            "GET|/admin/auths/**",
-            "GET|/oauth/**",
             "POST|/users/profiles",
-            "POST|/users/profiles/privileged",
-            "POST|/users/profiles/activate",
-            "POST|/users/profiles/verify/**",
             "POST|/users/auths/**",
             "POST|/users/recovery/**",
-            "POST|/oauth/**",
     };
 
     public static String[] getExcludesByHttpMethod(String method) {

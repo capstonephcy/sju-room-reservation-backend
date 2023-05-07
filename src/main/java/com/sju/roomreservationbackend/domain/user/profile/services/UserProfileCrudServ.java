@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,19 +25,28 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
     }
 
     @Transactional
-    public UserProfile createAdmin(CreateUserProfileReqDTO reqDTO) throws Exception {
+    public UserProfile createUserProfile(CreateUserProfileReqDTO reqDTO) throws Exception {
+        this.checkUsernameDuplication(reqDTO.getUsername());
         this.checkEmailDuplication(reqDTO.getEmail());
         this.checkPhoneDuplication(reqDTO.getPhone());
 
+        List<Permission> perms = new ArrayList<>();
+        perms.add(reqDTO.getPermission());
+        this.checkPermissionIsValid(reqDTO.getPermission());
+
         UserProfile userProfile = UserProfile.builder()
-                .email(reqDTO.getEmail())
-                .password(pwEncoder.encode(reqDTO.getPassword()))
                 .username(reqDTO.getUsername())
+                .password(pwEncoder.encode(reqDTO.getPassword()))
+                .email(reqDTO.getEmail())
                 .phone(reqDTO.getPhone())
                 .name(reqDTO.getName())
-
-                .permissions(this.grantAdminPerm())
-                .active(true)
+                .department(reqDTO.getDepartment())
+                .noShowRate(0.0d)
+                .reserveCnt(0)
+                .noShowCnt(0)
+                .createdAt(LocalDateTime.now())
+                .permissions(perms)
+                .active(reqDTO.getPermission() == Permission.STUDENT)
                 .build();
 
         return userProfileRepo.save(userProfile);
@@ -48,26 +59,30 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
                         userMsgSrc.getMessage("error.user.notExist", null, Locale.ENGLISH)
                 ));
     }
-    public UserProfile fetchUserProfileByEmail(String email) throws Exception {
-        return userProfileRepo.findByEmail(email)
-                .orElseThrow(() -> new Exception(
-                        userMsgSrc.getMessage("error.user.notExist", null, Locale.ENGLISH)
-                ));
-    }
     public UserProfile fetchUserProfileByUsername(String username) throws Exception {
         return userProfileRepo.findByUsername(username)
                 .orElseThrow(() -> new Exception(
                         userMsgSrc.getMessage("error.user.notExist", null, Locale.ENGLISH)
                 ));
     }
+    public UserProfile fetchUserProfileByEmail(String email) throws Exception {
+        return userProfileRepo.findByEmail(email)
+                .orElseThrow(() -> new Exception(
+                        userMsgSrc.getMessage("error.user.notExist", null, Locale.ENGLISH)
+                ));
+    }
+    public List<UserProfile> fetchWaitingPermitProfile(Permission permission) {
+        return userProfileRepo.findAllByPermissionsContainingAndActive(permission, false);
+    }
 
     @Transactional
     public UserProfile updateUserProfile(Authentication auth, UpdateUserProfileReqDTO reqDTO) {
         UserProfile userProfile = this.fetchCurrentUser(auth);
 
-        userProfile.setUsername(reqDTO.getUsername());
-        userProfile.setPhone(reqDTO.getPhone());
-        userProfile.setName(reqDTO.getName());
+        userProfile.setEmail(reqDTO.getEmail() == null ? userProfile.getEmail() : reqDTO.getEmail());
+        userProfile.setPhone(reqDTO.getPhone() == null ? userProfile.getPhone() : reqDTO.getPhone());
+        userProfile.setName(reqDTO.getName() == null ? userProfile.getName() : reqDTO.getName());
+        userProfile.setDepartment(reqDTO.getDepartment() == null ? userProfile.getDepartment() : reqDTO.getDepartment());
 
         return userProfileRepo.save(userProfile);
     }
@@ -92,11 +107,12 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
 
     @Transactional
     public void updateUserPermission(Authentication auth, UpdateUserPermissionReqDTO reqDTO) throws Exception {
-        // 관리자 권한을 부여하거나 박탈할 유저
+        // 권한을 변경하거나 박탈할 유저
         UserProfile userProfile = this.fetchUserProfileById(reqDTO.getId());
-        // 권한을 제어하려는 유저 (슈퍼유저 - ROOT_ADMIN 만 허용)
-        UserProfile superUserProfile = this.fetchCurrentUser(auth);
-        if (!superUserProfile.getPermissions().contains(Permission.ROOT_ADMIN)) {
+        // 권한을 제어하려는 유저 (슈퍼유저 - ROOT_ADMIN과 관리자 - ADMIN만 허용)
+        UserProfile adminProfile = this.fetchCurrentUser(auth);
+        if (!(adminProfile.getPermissions().contains(Permission.ROOT_ADMIN) ||
+                adminProfile.getPermissions().contains(Permission.ADMIN))) {
             throw new Exception(
                     userMsgSrc.getMessage("error.notEnoughPermission", null, Locale.ENGLISH)
             );

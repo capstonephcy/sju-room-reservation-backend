@@ -28,7 +28,7 @@ public class UserProfileAPI {
         return new APIUtil<CreateUserProfileResDTO>() {
             @Override
             protected void onSuccess() throws Exception {
-                resDTO.setCreatedUserProfile(userProfileCrudServ.createAdmin(reqDTO));
+                resDTO.setCreatedUserProfile(userProfileCrudServ.createUserProfile(reqDTO));
             }
         }.execute(resDTO, "res.user.create.success");
     }
@@ -43,8 +43,9 @@ public class UserProfileAPI {
             protected void onSuccess() throws Exception {
                 switch(reqOptionType) {
                     case CURRENT -> resDTO.setUserProfile(userProfileCrudServ.fetchCurrentUser(auth));
-                    case EMAIL -> resDTO.setUserProfile(userProfileCrudServ.fetchUserProfileByEmail(reqDTO.getEmail()));
                     case USERNAME -> resDTO.setUserProfile(userProfileCrudServ.fetchUserProfileByUsername(reqDTO.getUsername()));
+                    case EMAIL -> resDTO.setUserProfile(userProfileCrudServ.fetchUserProfileByEmail(reqDTO.getEmail()));
+                    case WAITING_PERMIT -> resDTO.setUserProfiles(userProfileCrudServ.fetchWaitingPermitProfile(reqDTO.getPermission()));
                     default -> throw new Exception(
                             msgSrc.getMessage("valid.binding", null, Locale.ENGLISH)
                     );
@@ -53,7 +54,7 @@ public class UserProfileAPI {
         }.execute(resDTO, "res.user.fetch.success");
     }
 
-    // 사용자 프로파일 업데이트 (관리자/유저 파라미터 다름에 주의)
+    // 사용자 프로파일 업데이트
     @PutMapping("/users/profiles")
     public ResponseEntity<?> updateUserProfile(Authentication auth, @Valid @RequestBody UpdateUserProfileReqDTO reqDTO) {
         UpdateUserProfileResDTO resDTO = new UpdateUserProfileResDTO();
@@ -77,8 +78,8 @@ public class UserProfileAPI {
         }.execute(resDTO, "res.password.update.success");
     }
 
-    // 사용자 권한 강제 변경 (루트 관리자만 가능)
-    @PreAuthorize("hasAnyAuthority('ROOT_ADMIN')")
+    // 사용자 권한 강제 변경 (관리자만 가능)
+    @PreAuthorize("hasAnyAuthority('ROOT_ADMIN', 'ADMIN')")
     @PutMapping("/users/profiles/permission")
     public ResponseEntity<?> updateUserPermission(Authentication auth, @Valid @RequestBody UpdateUserPermissionReqDTO reqDto) {
         UpdateUserPermissionResDTO resDTO = new UpdateUserPermissionResDTO();
