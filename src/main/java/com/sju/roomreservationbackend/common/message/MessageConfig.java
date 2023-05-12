@@ -35,7 +35,8 @@ public class MessageConfig implements WebMvcConfigurer {
         msgSrc.setBasenames(
                 "messages/global/validation",
                 "messages/users/validation",
-                "messages/rooms/validation"
+                "messages/rooms/validation",
+                "messages/reservations/validation"
         );
         return msgSrc;
     }
@@ -81,6 +82,17 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/rooms/validation",
                 "messages/rooms/response",
                 "messages/rooms/error"
+        );
+    }
+
+    @Bean
+    public static MessageSource getReservationMsgSrc() {
+        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
+        msgSrc.setBasenames(
+                "messages/global/validation",
+                "messages/reservations/validation",
+                "messages/reservations/response",
+                "messages/reservations/error"
         );
         return msgSrc;
     }

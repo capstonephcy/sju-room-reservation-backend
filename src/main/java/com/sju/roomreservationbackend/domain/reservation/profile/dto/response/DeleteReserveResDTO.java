@@ -1,4 +1,10 @@
 package com.sju.roomreservationbackend.domain.reservation.profile.dto.response;
 
-public class DeleteReserveResDTO {
+import com.sju.roomreservationbackend.common.http.GeneralResDTO;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class DeleteReserveResDTO extends GeneralResDTO {
 }

@@ -1,24 +1,101 @@
 package com.sju.roomreservationbackend.domain.reservation.profile.service;
 
+import com.sju.roomreservationbackend.common.message.MessageConfig;
 import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.reservation.profile.repository.ReservationRepo;
+import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
+import com.sju.roomreservationbackend.domain.user.profile.entity.Permission;
+import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Locale;
+
+@RequiredArgsConstructor
+@Service
 public class ReservationLogicServ {
-    protected ReservationRepo reservationRepo;
 
-    protected void checkReservationIsValid(Reservation reservation) throws Exception {
+    protected final ReservationRepo reservationRepo;
+    protected final MessageSource reservationMsgSrc = MessageConfig.getReservationMsgSrc();
 
+    protected boolean isReservationIsValid(Reservation reservation) {
+        // check if time range is valid
+        return !reservation.getStart().isAfter(reservation.getEnd());
     }
 
-    protected void checkReservationIsDuplicated(Reservation reservation) throws Exception {
+    // TODO(krapie): refactor this method into smaller methods
+    protected boolean isResTimeIsAllowedForUser(UserProfile user, Reservation reservation) {
+        // 1. if user is professor, there is no limit
+        if(user.getPermissions().contains(Permission.PROFESSOR)) {
+            return true;
+        }
 
+        // 2. check if user is allowed to reserve at this point of date
+        if(user.getPermissions().contains(Permission.GRADUATED)) {
+            // if user is graduated, user can reserve after 1 week
+            return reservation.getDate().isAfter(LocalDate.now().plusWeeks(1));
+        }
+        else {
+            // if user is student, user can reserve after 2 day
+            return reservation.getDate().isAfter(LocalDate.now().plusDays(2));
+        }
+
+        // 3. check room's state (max/normal/loose), and check if user is allowed to reserve
+        Room room = reservation.getRoom();
+        switch(room.getState()) {
+            case MAX:
+                if (user.getPermissions().contains(Permission.GRADUATED)) {
+                    // return false when range of start time and end time is greater than room's maxPeakTimeForGrad
+                    return reservation.getStart().plusMinutes(room.getMaxPeakTimeForGrad()).isBefore(reservation.getEnd());
+                }
+                else { // user is student (Permission.STUDENT)
+                    // return false when range of start time and end time is greater than room's maxPeakTimeForStud
+                    return reservation.getStart().plusMinutes(room.getMaxPeakTimeForStud()).isBefore(reservation.getEnd());
+                }
+            case NORMAL:
+                if (user.getPermissions().contains(Permission.GRADUATED)) {
+                    // return false when range of start time and end time is greater than room's normalPeakTimeForGrad
+                    return reservation.getStart().plusMinutes(room.getNormalPeakTimeForGrad()).isBefore(reservation.getEnd());
+                }
+                else { // user is student (Permission.STUDENT)
+                    // return false when range of start time and end time is greater than room's normalPeakTimeForStud
+                    return reservation.getStart().plusMinutes(room.getNormalPeakTimeForStud()).isBefore(reservation.getEnd());
+                }
+            case LOOSE:
+                if (user.getPermissions().contains(Permission.GRADUATED)) {
+                    // return false when range of start time and end time is greater than room's loosePeakTimeForGrad
+                    return reservation.getStart().plusMinutes(room.getLoosePeakTimeForGrad()).isBefore(reservation.getEnd());
+                }
+                else { // user is student (Permission.STUDENT)
+                    // return false when range of start time and end time is greater than room's loosePeakTimeForStud
+                    return reservation.getStart().plusMinutes(room.getLoosePeakTimeForStud()).isBefore(reservation.getEnd());
+                }
+        }
     }
 
-    protected void checkIn(Reservation reservation, String verifyCode) {
-
+    protected boolean isReservationIsDuplicated(Reservation reservation) {
+        // check if reservation's time range is overlaps existing reservations in db.
+        return reservationRepo.existsByRoomAndDateAndEndGreaterThanEqualAndStartLessThanEqual(
+                reservation.getRoom(),
+                reservation.getDate(),
+                reservation.getEnd(),
+                reservation.getStart()
+        );
     }
 
-    protected void sendNotification(Reservation reservation) {
+    protected boolean isUserOwnsReservation(UserProfile user, Reservation reservation) {
+        return user.equals(reservation.getReserver());
+    }
 
+    protected void checkIn(Reservation reservation, String checkInCode) {
+        // if verifyCode is same as reservation's verifyCode, update checkIn to true
+        if(!reservation.getCheckInCode().equals(checkInCode)) {
+            throw new IllegalArgumentException(reservationMsgSrc.getMessage("error.reservation.verificationCode.notMatch", null, Locale.ENGLISH));
+        }
+
+        reservation.setCheckIn(true);
+        reservationRepo.save(reservation);
     }
 }
