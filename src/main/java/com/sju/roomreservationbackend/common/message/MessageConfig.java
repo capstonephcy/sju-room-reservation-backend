@@ -34,7 +34,8 @@ public class MessageConfig implements WebMvcConfigurer {
         ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
         msgSrc.setBasenames(
                 "messages/global/validation",
-                "messages/users/validation"
+                "messages/users/validation",
+                "messages/rooms/validation"
         );
         return msgSrc;
     }
@@ -68,6 +69,18 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/users/validation",
                 "messages/users/response",
                 "messages/users/error"
+        );
+        return msgSrc;
+    }
+
+    @Bean
+    public static MessageSource getRoomMsgSrc() {
+        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
+        msgSrc.setBasenames(
+                "messages/global/validation",
+                "messages/rooms/validation",
+                "messages/rooms/response",
+                "messages/rooms/error"
         );
         return msgSrc;
     }
