@@ -1,5 +1,6 @@
 package com.sju.roomreservationbackend.domain.room.profile.services;
 
+import com.sju.roomreservationbackend.common.storage.StorageService;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.CreateRoomReqDTO;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.UpdateRoomReqDTO;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
@@ -14,14 +15,18 @@ import java.util.Locale;
 
 @Service
 public class RoomCrudServ extends RoomLogicServ {
+    protected final StorageService storageServ;
 
-    public RoomCrudServ(RoomRepo roomRepo) {
+    public RoomCrudServ(RoomRepo roomRepo, StorageService storageServ) {
         super(roomRepo);
+        this.storageServ = storageServ;
     }
 
     @Transactional
-    public Room createRoom(CreateRoomReqDTO reqDTO) {
-        // 체크
+    public Room createRoom(CreateRoomReqDTO reqDTO) throws Exception {
+        
+        // 명칭 중복 체크
+        this.checkNameDuplication(reqDTO.getName());
 
         Room room = Room.builder()
                 .name(reqDTO.getName())
@@ -40,7 +45,10 @@ public class RoomCrudServ extends RoomLogicServ {
                 .description(reqDTO.getDescription())
                 .build();
 
-        return roomRepo.save(room);
+        room = roomRepo.save(room);
+        storageServ.createEntityStorage("room", room.getId());
+
+        return room;
     }
 
     public Room fetchRoomById(Long id) throws Exception {
@@ -79,6 +87,8 @@ public class RoomCrudServ extends RoomLogicServ {
     @Transactional
     public Long deleteRoom(Long reservationId) throws Exception {
         Room targetRoom = this.fetchRoomById(reservationId);
+
+        storageServ.deleteEntityStorage("room", targetRoom.getId());
 
         roomRepo.delete(targetRoom);
         return targetRoom.getId();
