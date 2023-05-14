@@ -27,7 +27,7 @@ public class RoomAPI {
 
         return new APIUtil<CreateRoomResDTO>() {
             @Override
-            protected void onSuccess() {
+            protected void onSuccess() throws Exception {
                 resDTO.setCreatedRoomProfile(roomCrudServ.createRoom(reqDTO));
             }
         }.execute(resDTO, "res.room.create.success");
