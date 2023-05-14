@@ -27,6 +27,7 @@ public class RoomCrudServ extends RoomLogicServ {
         
         // 명칭 중복 체크
         this.checkNameDuplication(reqDTO.getName());
+        this.checkBuildingAndNumberDuplication(reqDTO.getBuilding(), reqDTO.getNumber());
 
         Room room = Room.builder()
                 .name(reqDTO.getName())
@@ -58,7 +59,7 @@ public class RoomCrudServ extends RoomLogicServ {
     }
 
     public List<Room> fetchRoomsByName(String name) {
-        return roomRepo.findAllByNameLike(name);
+        return roomRepo.findAllByNameContainingIgnoreCase(name);
     }
 
     public Page<Room> fetchRoomsByBuilding(String building, int pageIdx, int pageLimit) {
@@ -67,6 +68,8 @@ public class RoomCrudServ extends RoomLogicServ {
 
     @Transactional
     public Room updateRoom(UpdateRoomReqDTO reqDTO) throws Exception {
+        this.checkNameDuplication(reqDTO.getName());
+
         Room room = this.fetchRoomById(reqDTO.getId());
 
         room.setName(reqDTO.getName() == null ? room.getName() : reqDTO.getName());

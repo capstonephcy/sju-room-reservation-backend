@@ -20,4 +20,9 @@ public class RoomLogicServ {
             throw new Exception(msgSrc.getMessage("error.room.name.dup", null, Locale.ENGLISH));
         }
     }
+    protected void checkBuildingAndNumberDuplication(String building, Integer number) throws Exception {
+        if (roomRepo.existsByBuildingAndNumber(building,number)) {
+            throw new Exception(msgSrc.getMessage("error.room.building.dup", null, Locale.ENGLISH));
+        }
+    }
 }

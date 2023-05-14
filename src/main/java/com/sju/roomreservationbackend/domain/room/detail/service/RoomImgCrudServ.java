@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -22,12 +24,21 @@ public class RoomImgCrudServ extends RoomImgLogicServ{
     }
 
     @Transactional
-    public RoomImage createRoomImg(UploadRoomImgReqDTO reqDTO) throws Exception {
-        MultipartFile file = reqDTO.getFile();
-        FileMetadata metadata = this.storageServ.saveFile(file, FileType.MEDIA_PHOTO, "room", reqDTO.getRoomId());
+    public List<RoomImage> createRoomImg(UploadRoomImgReqDTO reqDTO) throws Exception {
+        List<RoomImage> images = new ArrayList<>();
+
+        for (MultipartFile file : reqDTO.getFiles()) {
+            images.add(this.createRoomImg(reqDTO.getRoomId(), file));
+        }
+        return images;
+    }
+
+    @Transactional
+    public RoomImage createRoomImg(Long roomId, MultipartFile file) throws Exception {
+        FileMetadata metadata = this.storageServ.saveFile(file, FileType.MEDIA_PHOTO, "room", roomId);
 
         RoomImage roomImg = RoomImage.builder()
-                .room(this.fetchRoomById(reqDTO.getRoomId()))
+                .room(this.fetchRoomById(roomId))
                 .type(metadata.getType())
                 .fileName(metadata.getFileName())
                 .fileSize(metadata.getFileSize())

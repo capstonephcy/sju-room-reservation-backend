@@ -5,8 +5,10 @@ import com.sju.roomreservationbackend.domain.room.detail.entity.RoomImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UploadRoomImgResDTO extends GeneralResDTO {
-    private RoomImage uploadedRoomImage;
+    private List<RoomImage> uploadedRoomImages;
 }

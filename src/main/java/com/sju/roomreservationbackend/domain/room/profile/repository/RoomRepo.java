@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface RoomRepo extends JpaRepository<Room, Long> {
     Boolean existsByName(String name);
-    List<Room> findAllByNameLike(String name);
+    Boolean existsByBuildingAndNumber(String building, Integer number);
+    List<Room> findAllByNameContainingIgnoreCase(String name);
     Page<Room> findAllByBuilding(String building, Pageable pageable);
 }
