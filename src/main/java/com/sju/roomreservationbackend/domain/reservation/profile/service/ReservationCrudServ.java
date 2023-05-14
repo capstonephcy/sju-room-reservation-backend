@@ -6,10 +6,12 @@ import com.sju.roomreservationbackend.domain.reservation.profile.dto.request.Upd
 import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.reservation.profile.repository.ReservationRepo;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
-import com.sju.roomreservationbackend.domain.room.profile.service.RoomCrudServ;
+import com.sju.roomreservationbackend.domain.room.profile.services.RoomCrudServ;
 import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 import com.sju.roomreservationbackend.domain.user.profile.services.UserProfileCrudServ;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +40,19 @@ public class ReservationCrudServ extends ReservationLogicServ {
     @Transactional
     public Reservation createReservation(Authentication auth, CreateReserveReqDTO reqDTO) throws Exception {
         UserProfile user = userProfileCrudServ.fetchCurrentUser(auth);
-        Room room = roomCrudServ.fetchRoomById(auth, reqDTO.getRoomId());
+        Room room = roomCrudServ.fetchRoomById(reqDTO.getRoomId());
+
+        // get list of users by ids using lambda
+        List<UserProfile> attendants = new ArrayList<>();
+        for(Long id : reqDTO.getAttendants()) {
+            attendants.add(userProfileCrudServ.fetchUserProfileById(id));
+        }
+
+        // create check in code
+        String checkInCode = generateCheckInCode();
 
         // create reservation entity
-        Reservation reservation = reqDTO.toEntity(room);
+        Reservation reservation = reqDTO.toEntity(user, room, attendants, checkInCode);
 
         // validate reservation
         if(!isReservationIsValid(reservation)) {
@@ -75,21 +86,23 @@ public class ReservationCrudServ extends ReservationLogicServ {
                 ));
     }
 
-    public List<Reservation> fetchReservationsByUser(Long userId) {
-        return reservationRepo.findAllByUserId(userId);
+    public Page<Reservation> fetchReservationsByUser(Long userId, int pageIdx, int pageLimit) {
+        return reservationRepo.findAllByRevOwnerIdOrAttendantsId(userId, userId, PageRequest.of(pageIdx, pageLimit));
     }
 
-    public List<Reservation> fetchReservationsByRoom(Long roomId) {
-        return reservationRepo.findAllByRoomId(roomId);
+    public Page<Reservation> fetchReservationsByRoom(Long roomId, int pageIdx, int pageLimit) {
+        return reservationRepo.findAllByRoomId(roomId, PageRequest.of(pageIdx, pageLimit));
     }
 
-    public List<Reservation> fetchReservationsByTimeRange(
+    public Page<Reservation> fetchReservationsByTimeRange(
             LocalDate startDate,
             LocalDate endDate,
             LocalTime startTime,
-            LocalTime endTime
+            LocalTime endTime,
+            int pageIdx,
+            int pageLimit
     ) {
-        return reservationRepo.findAllByDateBetweenAndStartLessThanEqualAndEndGreaterThanEqual(startDate, endDate, startTime, endTime);
+        return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqual(startDate, endDate, startTime, endTime, PageRequest.of(pageIdx, pageLimit));
     }
 
     @Transactional

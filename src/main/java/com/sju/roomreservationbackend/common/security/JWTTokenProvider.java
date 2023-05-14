@@ -39,7 +39,7 @@ public class JWTTokenProvider {
     public static final long JWT_REFRESH_TOKEN_VALIDITY = 30 * 24 * 60 * 60;
 
     // 인증 토큰 유효기간 (5분)
-    public static final long JWT_ACCESS_TOKEN_VALIDITY = 5 * 10;
+    public static final long JWT_ACCESS_TOKEN_VALIDITY = 5 * 60;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getId);

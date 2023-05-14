@@ -34,7 +34,7 @@ public class RoomAPI {
     }
 
     @GetMapping("/rooms/profiles")
-    public ResponseEntity<?> fetchRoom(@Valid FetchRoomReqDTO reqDTO, @RequestHeader("Request-Type") String reqType) {
+    public ResponseEntity<?> fetchRoom(@RequestBody @Valid FetchRoomReqDTO reqDTO, @RequestHeader("Request-Type") String reqType) {
         FetchRoomReqOptionType reqOptionType = FetchRoomReqOptionType.valueOf(reqType);
         FetchRoomResDTO resDTO = new FetchRoomResDTO();
 

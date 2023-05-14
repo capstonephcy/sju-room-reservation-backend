@@ -3,6 +3,7 @@ package com.sju.roomreservationbackend.domain.room.profile.services;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.CreateRoomReqDTO;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.UpdateRoomReqDTO;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
+import com.sju.roomreservationbackend.domain.room.profile.repository.RoomRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,10 @@ import java.util.Locale;
 
 @Service
 public class RoomCrudServ extends RoomLogicServ {
+
+    public RoomCrudServ(RoomRepo roomRepo) {
+        super(roomRepo);
+    }
 
     @Transactional
     public Room createRoom(CreateRoomReqDTO reqDTO) {

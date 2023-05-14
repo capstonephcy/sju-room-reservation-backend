@@ -22,8 +22,4 @@ public class RegularRevAPI {
     public DeleteRegularRevResDTO deleteRegularRev(DeleteRegularRevReqDTO reqDTO) {
         return new DeleteRegularRevResDTO();
     }
-
-    public CheckInRegularRevResDTO confirmRegularRev(CheckInRegularRevReqDTO reqDTO) {
-        return new CheckInRegularRevResDTO();
-    }
 }

@@ -1,6 +1,7 @@
 package com.sju.roomreservationbackend.domain.reservation.profile.service;
 
 import com.sju.roomreservationbackend.common.message.MessageConfig;
+import com.sju.roomreservationbackend.common.tempcode.TempCodeGenerator;
 import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.reservation.profile.repository.ReservationRepo;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
@@ -34,18 +35,18 @@ public class ReservationLogicServ {
 
         // 2. check if user is allowed to reserve at this point of date
         if(user.getPermissions().contains(Permission.GRADUATED)) {
-            // if user is graduated, user can reserve after 1 week
-            return reservation.getDate().isAfter(LocalDate.now().plusWeeks(1));
+            // if user is graduated, user can reserve up to 1-week period
+            return reservation.getDate().isBefore(LocalDate.now().plusDays(7));
         }
-        else {
-            // if user is student, user can reserve after 2 day
-            return reservation.getDate().isAfter(LocalDate.now().plusDays(2));
+        if(user.getPermissions().contains(Permission.STUDENT)) {
+            // if user is student, user can reserve before 2 days period
+            return reservation.getDate().isBefore(LocalDate.now().plusDays(2));
         }
 
         // 3. check room's state (max/normal/loose), and check if user is allowed to reserve
         Room room = reservation.getRoom();
-        switch(room.getState()) {
-            case MAX:
+        switch(room.getCongestion()) {
+            case HIGH:
                 if (user.getPermissions().contains(Permission.GRADUATED)) {
                     // return false when range of start time and end time is greater than room's maxPeakTimeForGrad
                     return reservation.getStart().plusMinutes(room.getMaxPeakTimeForGrad()).isBefore(reservation.getEnd());
@@ -54,39 +55,41 @@ public class ReservationLogicServ {
                     // return false when range of start time and end time is greater than room's maxPeakTimeForStud
                     return reservation.getStart().plusMinutes(room.getMaxPeakTimeForStud()).isBefore(reservation.getEnd());
                 }
-            case NORMAL:
+            case MEDIUM:
                 if (user.getPermissions().contains(Permission.GRADUATED)) {
                     // return false when range of start time and end time is greater than room's normalPeakTimeForGrad
-                    return reservation.getStart().plusMinutes(room.getNormalPeakTimeForGrad()).isBefore(reservation.getEnd());
+                    return reservation.getStart().plusMinutes(room.getMaxNormalTimeForGrad()).isBefore(reservation.getEnd());
                 }
                 else { // user is student (Permission.STUDENT)
                     // return false when range of start time and end time is greater than room's normalPeakTimeForStud
-                    return reservation.getStart().plusMinutes(room.getNormalPeakTimeForStud()).isBefore(reservation.getEnd());
+                    return reservation.getStart().plusMinutes(room.getMaxNormalTimeForStud()).isBefore(reservation.getEnd());
                 }
-            case LOOSE:
+            case LOW:
                 if (user.getPermissions().contains(Permission.GRADUATED)) {
                     // return false when range of start time and end time is greater than room's loosePeakTimeForGrad
-                    return reservation.getStart().plusMinutes(room.getLoosePeakTimeForGrad()).isBefore(reservation.getEnd());
+                    return reservation.getStart().plusMinutes(room.getMaxLooseTimeForGrad()).isBefore(reservation.getEnd());
                 }
                 else { // user is student (Permission.STUDENT)
                     // return false when range of start time and end time is greater than room's loosePeakTimeForStud
-                    return reservation.getStart().plusMinutes(room.getLoosePeakTimeForStud()).isBefore(reservation.getEnd());
+                    return reservation.getStart().plusMinutes(room.getMaxLooseTimeForStud()).isBefore(reservation.getEnd());
                 }
         }
+
+        return true;
     }
 
     protected boolean isReservationIsDuplicated(Reservation reservation) {
         // check if reservation's time range is overlaps existing reservations in db.
-        return reservationRepo.existsByRoomAndDateAndEndGreaterThanEqualAndStartLessThanEqual(
+        return reservationRepo.existsByRoomAndDateAndStartGreaterThanEqualAndEndLessThanEqual(
                 reservation.getRoom(),
                 reservation.getDate(),
-                reservation.getEnd(),
-                reservation.getStart()
+                reservation.getStart(),
+                reservation.getEnd()
         );
     }
 
     protected boolean isUserOwnsReservation(UserProfile user, Reservation reservation) {
-        return user.equals(reservation.getReserver());
+        return user.equals(reservation.getRevOwner());
     }
 
     protected void checkIn(Reservation reservation, String checkInCode) {
@@ -97,5 +100,11 @@ public class ReservationLogicServ {
 
         reservation.setCheckIn(true);
         reservationRepo.save(reservation);
+    }
+
+    protected String generateCheckInCode() {
+        char[] authCodeCharSet = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+        return TempCodeGenerator.generate(authCodeCharSet, 6);
     }
 }
