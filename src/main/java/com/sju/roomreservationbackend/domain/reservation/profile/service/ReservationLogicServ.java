@@ -88,8 +88,8 @@ public class ReservationLogicServ {
         );
     }
 
-    protected boolean isUserOwnsReservation(UserProfile user, Reservation reservation) {
-        return user.equals(reservation.getRevOwner());
+    protected boolean userNotOwnsReservation(UserProfile user, Reservation reservation) {
+        return !user.getId().equals(reservation.getRevOwner().getId());
     }
 
     protected void checkIn(Reservation reservation, String checkInCode) {
