@@ -18,20 +18,20 @@ public class RoomImgAPI {
     private final RoomImgCrudServ roomImgCrudServ;
 
     @PreAuthorize("hasAnyAuthority('ADMIN','ROOT_ADMIN')")
-    @PostMapping("/musics")
+    @PostMapping("/rooms/images")
     ResponseEntity<?> uploadMusic(@Valid UploadRoomImgReqDTO reqDTO) {
         UploadRoomImgResDTO resDTO = new UploadRoomImgResDTO();
 
         return new APIUtil<UploadRoomImgResDTO>() {
             @Override
             protected void onSuccess() throws Exception {
-                resDTO.setUploadedRoomImage(roomImgCrudServ.createRoomImg(reqDTO));
+                resDTO.setUploadedRoomImages(roomImgCrudServ.createRoomImg(reqDTO));
             }
         }.execute(resDTO, "res.room.image.upload.success");
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','ROOT_ADMIN')")
-    @DeleteMapping("/musics")
+    @DeleteMapping("/rooms/images")
     ResponseEntity<?> deleteMusic(@Valid DeleteRoomImgReqDto reqDTO) {
         DeleteRoomImgResDto resDTO = new DeleteRoomImgResDto();
 
