@@ -69,6 +69,15 @@ public class ReservationAPI {
                             resDTO.setPageElementSize(resultPage.getTotalElements());
                             resDTO.setTotalPage(resultPage.getTotalPages());
                         }
+                        case REGULAR_REV_ID -> {
+                            resultPage = reservationCrudServ.fetchReservationsByRegularRevId(reqDTO.getRegularRevId(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
+
+                            resDTO.setReservations(resultPage.getContent());
+                            resDTO.setPageable(true);
+                            resDTO.setPageIdx(resultPage.getNumber());
+                            resDTO.setPageElementSize(resultPage.getTotalElements());
+                            resDTO.setTotalPage(resultPage.getTotalPages());
+                        }
                         case TIME_RANGE -> {
                             resultPage = reservationCrudServ.fetchReservationsByTimeRange(reqDTO.getStartDate(), reqDTO.getEndDate(), reqDTO.getStartTime(), reqDTO.getEndTime(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
 

@@ -12,5 +12,10 @@ public class UpdateReserveReqDTO {
     @PositiveOrZero(message = "valid.reservation.id.positive")
     private Long id;
 
-    List<Long> attendants;
+    private List<Long> attendants;
+
+    public UpdateReserveReqDTO(Long id, List<Long> attendants) {
+        this.id = id;
+        this.attendants = attendants;
+    }
 }

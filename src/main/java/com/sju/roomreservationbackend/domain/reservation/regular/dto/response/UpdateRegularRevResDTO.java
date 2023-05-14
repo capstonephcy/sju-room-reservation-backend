@@ -1,4 +1,12 @@
 package com.sju.roomreservationbackend.domain.reservation.regular.dto.response;
 
-public class UpdateRegularRevResDTO {
+import com.sju.roomreservationbackend.common.http.GeneralResDTO;
+import com.sju.roomreservationbackend.domain.reservation.regular.entity.RegularRev;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class UpdateRegularRevResDTO extends GeneralResDTO {
+    private RegularRev regularRev;
 }

@@ -34,4 +34,6 @@ public interface ReservationRepo extends CrudRepository<Reservation, Long> {
     );
 
     Page<Reservation> findAllByRevOwnerIdOrAttendantsId(Long userId, Long attendantId, Pageable pageable);
+
+    Page<Reservation> findAllByRegularRevId(Long regularRevId, Pageable pageable);
 }

@@ -39,6 +39,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
 
     @Transactional
     public Reservation createReservation(Authentication auth, CreateReserveReqDTO reqDTO) throws Exception {
+        // get current user and room
         UserProfile user = userProfileCrudServ.fetchCurrentUser(auth);
         Room room = roomCrudServ.fetchRoomById(reqDTO.getRoomId());
 
@@ -94,6 +95,10 @@ public class ReservationCrudServ extends ReservationLogicServ {
         return reservationRepo.findAllByRoomId(roomId, PageRequest.of(pageIdx, pageLimit));
     }
 
+    public Page<Reservation> fetchReservationsByRegularRevId(Long regularRevId, int pageIdx, int pageLimit) {
+        return reservationRepo.findAllByRegularRevId(regularRevId, PageRequest.of(pageIdx, pageLimit));
+    }
+
     public Page<Reservation> fetchReservationsByTimeRange(
             LocalDate startDate,
             LocalDate endDate,
@@ -113,7 +118,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
         Reservation reservation = this.fetchReservationById(reqDTO.getId());
 
         // check if user is owner of reservation
-        if(isUserOwnsReservation(user, reservation)) {
+        if(userNotOwnsReservation(user, reservation)) {
             throw new IllegalArgumentException("error.reservation.notOwner");
         }
 
@@ -137,7 +142,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
         Reservation reservation = this.fetchReservationById(reservationId);
 
         // check if user is owner of reservation
-        if(isUserOwnsReservation(user, reservation)) {
+        if(userNotOwnsReservation(user, reservation)) {
             throw new IllegalArgumentException("error.reservation.notOwner");
         }
 
@@ -153,7 +158,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
         Reservation reservation = this.fetchReservationById(reqDto.getId());
 
         // check if user is owner of reservation
-        if(isUserOwnsReservation(user, reservation)) {
+        if(userNotOwnsReservation(user, reservation)) {
             throw new IllegalArgumentException("error.reservation.notOwner");
         }
 

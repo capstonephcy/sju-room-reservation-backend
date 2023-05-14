@@ -19,6 +19,9 @@ public class FetchReserveReqDTO extends GeneralPageableReqDTO {
     @PositiveOrZero(message = "valid.reservation.id.positive")
     private Long roomId;
 
+    @PositiveOrZero(message = "valid.reservation.regularRev.id.positive")
+    private Long regularRevId;
+
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startTime;
