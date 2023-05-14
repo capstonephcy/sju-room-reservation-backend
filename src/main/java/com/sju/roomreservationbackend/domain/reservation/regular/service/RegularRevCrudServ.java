@@ -4,10 +4,12 @@ import com.sju.roomreservationbackend.domain.reservation.regular.dto.request.Cre
 import com.sju.roomreservationbackend.domain.reservation.regular.dto.request.UpdateRegularRevReqDTO;
 import com.sju.roomreservationbackend.domain.reservation.regular.entity.RegularRev;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class RegularRevCrudServ extends RegularRevLogicServ{
     public RegularRev createRegularRev(Authentication auth, CreateRegularRevReqDTO reqDTO) {
         return new RegularRev();

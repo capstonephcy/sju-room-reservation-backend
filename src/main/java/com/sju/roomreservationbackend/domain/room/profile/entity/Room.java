@@ -12,6 +12,7 @@ import lombok.*;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
     private Long id;
 
     @Column
@@ -34,6 +35,10 @@ public class Room {
 
     @Column
     private Boolean projector;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column
+    private RoomCongestion congestion;
 
     @Column
     private Integer maxPeakTimeForGrad;

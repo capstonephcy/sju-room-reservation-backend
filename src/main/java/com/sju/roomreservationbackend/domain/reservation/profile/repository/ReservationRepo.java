@@ -2,34 +2,36 @@ package com.sju.roomreservationbackend.domain.reservation.profile.repository;
 
 import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ReservationRepo extends CrudRepository<Reservation, Long> {
+    Page<Reservation> findAllByRoomId(Long roomId, Pageable pageable);
 
-    List<Reservation> findAllByUserId(Long userId);
-
-    List<Reservation> findAllByRoomId(Long roomId);
-
-    // Find all matching reservations in a time range
-    List<Reservation> findAllByDateBetweenAndStartLessThanEqualAndEndGreaterThanEqual(
+    // Find all matching reservations in a date range and time range
+    Page<Reservation> findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqual(
             LocalDate startDate,
             LocalDate endDate,
             LocalTime startTime,
-            LocalTime endTime
+            LocalTime endTime,
+            Pageable pageable
     );
 
     // Find all matching reservations in a time range in a room
-    boolean existsByRoomAndDateAndEndGreaterThanEqualAndStartLessThanEqual(
+    boolean existsByRoomAndDateAndStartGreaterThanEqualAndEndLessThanEqual(
             Room room,
             LocalDate date,
-            LocalTime end,
-            LocalTime start
+            LocalTime start,
+            LocalTime end
     );
+
+    Page<Reservation> findAllByRevOwnerIdOrAttendantsId(Long userId, Long attendantId, Pageable pageable);
 }

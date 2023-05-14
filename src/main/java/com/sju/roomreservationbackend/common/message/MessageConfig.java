@@ -45,7 +45,10 @@ public class MessageConfig implements WebMvcConfigurer {
     public static MessageSource getResponseMsgSrc() {
         ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
         msgSrc.setBasenames(
-                "messages/users/response"
+                "messages/users/response",
+                "messages/rooms/response",
+                "messages/reservations/response",
+                "messages/storage/response"
         );
         return msgSrc;
     }
@@ -83,6 +86,7 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/rooms/response",
                 "messages/rooms/error"
         );
+        return msgSrc;
     }
 
     @Bean

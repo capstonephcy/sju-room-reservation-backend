@@ -20,23 +20,27 @@ import java.util.List;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name="rev_id")
     private Long id;
 
-    @Column
-    @ManyToOne(targetEntity = Room.class, fetch = FetchType.LAZY)
+    // TODO(krapie): Change FetchType to LAZY, and configure new DTOs for fetching
+    @ManyToOne(targetEntity = Room.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "room_id")
     private Room room;
 
-    @Column
-    @ManyToOne(targetEntity = UserProfile.class, fetch = FetchType.LAZY)
-    private UserProfile reserver;
+    // TODO(krapie): Change FetchType to LAZY, and configure new DTOs for fetching
+    @ManyToOne(targetEntity = UserProfile.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private UserProfile revOwner;
 
     @Column
-    @ManyToMany(targetEntity = UserProfile.class, fetch = FetchType.LAZY)
+    // TODO(krapie): Change FetchType to LAZY, and configure new DTOs for fetching
+    @ManyToMany(targetEntity = UserProfile.class, fetch = FetchType.EAGER)
     private List<UserProfile> attendants;
 
-    @Column
-    @ManyToOne(targetEntity = RegularRev.class, fetch = FetchType.LAZY)
+    // TODO(krapie): Change FetchType to LAZY, and configure new DTOs for fetching
+    @ManyToOne(targetEntity = RegularRev.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "regular_rev_id")
     private RegularRev regularRev;
 
     @Column
@@ -53,5 +57,4 @@ public class Reservation {
     private String checkInCode;
     private Boolean checkIn;
     private Boolean noShow;
-
 }
