@@ -37,7 +37,7 @@ public class RegularRevAPI {
 
     @GetMapping("/reservation/regulars")
     public ResponseEntity<?> fetchRegularRev(
-            @Valid @RequestBody FetchRegularRevReqDTO reqDTO,
+            @Valid FetchRegularRevReqDTO reqDTO,
             @RequestHeader("Request-Type") FetchRegularRevReqOptionType optionType) {
         FetchRegularRevResDTO resDTO = new FetchRegularRevResDTO();
 

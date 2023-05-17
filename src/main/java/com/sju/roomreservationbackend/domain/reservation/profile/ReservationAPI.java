@@ -39,7 +39,7 @@ public class ReservationAPI {
     // 단건 예약 조회
     @GetMapping("/reservation/profiles")
     public ResponseEntity<?> fetchReservation(
-            @Valid @RequestBody FetchReserveReqDTO reqDTO,
+            @Valid FetchReserveReqDTO reqDTO,
             @RequestHeader("Request-Type") FetchReserveReqOptionType optionType
     ) {
         FetchReserveResDTO resDTO = new FetchReserveResDTO();
