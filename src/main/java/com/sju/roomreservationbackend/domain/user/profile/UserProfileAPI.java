@@ -45,6 +45,7 @@ public class UserProfileAPI {
                     case CURRENT -> resDTO.setUserProfile(userProfileCrudServ.fetchCurrentUser(auth));
                     case USERNAME -> resDTO.setUserProfile(userProfileCrudServ.fetchUserProfileByUsername(reqDTO.getUsername()));
                     case EMAIL -> resDTO.setUserProfile(userProfileCrudServ.fetchUserProfileByEmail(reqDTO.getEmail()));
+                    case NAME -> resDTO.setUserProfiles(userProfileCrudServ.fetchUserProfileByName(reqDTO.getName()));
                     case WAITING_PERMIT -> resDTO.setUserProfiles(userProfileCrudServ.fetchWaitingPermitProfile(reqDTO.getPermission()));
                     default -> throw new Exception(
                             msgSrc.getMessage("valid.binding", null, Locale.ENGLISH)

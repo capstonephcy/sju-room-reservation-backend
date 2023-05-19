@@ -12,5 +12,7 @@ public class FetchUserProfileReqDTO {
     private String email;
     @Size(min = 2, max = 20, message = "valid.user.username.size")
     private String username;
+    @Size(max = 50, message = "valid.user.name.size")
+    private String name;
     private Permission permission;
 }

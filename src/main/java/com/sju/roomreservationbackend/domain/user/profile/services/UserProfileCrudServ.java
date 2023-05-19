@@ -71,6 +71,9 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
                         userMsgSrc.getMessage("error.user.notExist", null, Locale.ENGLISH)
                 ));
     }
+    public List<UserProfile> fetchUserProfileByName(String name) throws Exception {
+        return userProfileRepo.findAllByName(name);
+    }
     public List<UserProfile> fetchWaitingPermitProfile(Permission permission) {
         return userProfileRepo.findAllByPermissionsContainingAndActive(permission, false);
     }
@@ -109,7 +112,7 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
     public void updateUserPermission(Authentication auth, UpdateUserPermissionReqDTO reqDTO) throws Exception {
         // 권한을 변경하거나 박탈할 유저
         UserProfile userProfile = this.fetchUserProfileById(reqDTO.getId());
-        // 권한을 제어하려는 유저 (슈퍼유저 - ROOT_ADMIN과 관리자 - ADMIN만 허용)
+        // 권한을 제어하려는 유저 (슈퍼유저 - ROOT_ADMIN 과 관리자 - ADMIN 만 허용)
         UserProfile adminProfile = this.fetchCurrentUser(auth);
         if (!(adminProfile.getPermissions().contains(Permission.ROOT_ADMIN) ||
                 adminProfile.getPermissions().contains(Permission.ADMIN))) {

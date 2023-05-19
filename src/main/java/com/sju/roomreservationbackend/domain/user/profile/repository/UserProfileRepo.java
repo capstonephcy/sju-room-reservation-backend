@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface UserProfileRepo extends CrudRepository<UserProfile, Long> {
     Optional<UserProfile> findByEmail(String email);
     Optional<UserProfile> findByUsername(String username);
+    List<UserProfile> findAllByName(String name);
     List<UserProfile> findAllByPermissionsContainingAndActive(Permission permission, Boolean active);
 
     Boolean existsByUsername(String username);
