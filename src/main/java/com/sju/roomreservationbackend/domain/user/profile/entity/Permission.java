@@ -3,9 +3,9 @@ package com.sju.roomreservationbackend.domain.user.profile.entity;
 public enum Permission {
     ROOT_ADMIN("ROOT_ADMIN"),
     ADMIN("ADMIN"),
-    STUDENT("STUDENT"),
+    PROFESSOR("PROFESSOR"),
     GRADUATED("GRADUATED"),
-    PROFESSOR("PROFESSOR");
+    STUDENT("STUDENT");
 
     private final String value;
     Permission(String value) {

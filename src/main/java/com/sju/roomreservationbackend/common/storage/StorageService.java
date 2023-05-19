@@ -68,26 +68,28 @@ public class StorageService {
         // 용량 및 확장자 제한 사항
         long MEGABYTE = 1000000;
         long fileSizeLimit = MEGABYTE;
-        switch (fileType) {
-            case MEDIA_PHOTO -> {
-                acceptableExtensions = this.PHOTO_EXT;
-                fileSizeLimit = 2 * MEGABYTE;
-            }
-            case MEDIA_VIDEO -> {
-                acceptableExtensions = this.VIDEO_EXT;
-                fileSizeLimit = 100 * MEGABYTE;
-            }
-            case MEDIA_DOCUMENT -> {
-                acceptableExtensions = this.DOCUMENT_EXT;
-                fileSizeLimit = 10 * MEGABYTE;
-            }
-            case MEDIA_AUDIO -> {
-                acceptableExtensions = this.AUDIO_EXT;
-                fileSizeLimit = 20 * MEGABYTE;
-            }
-            case GEO_JSON -> {
-                acceptableExtensions = this.GEO_JSON_EXT;
-                fileSizeLimit = 2 * MEGABYTE;
+        if (fileType != null) {
+            switch (fileType) {
+                case MEDIA_PHOTO -> {
+                    acceptableExtensions = this.PHOTO_EXT;
+                    fileSizeLimit = 2 * MEGABYTE;
+                }
+                case MEDIA_VIDEO -> {
+                    acceptableExtensions = this.VIDEO_EXT;
+                    fileSizeLimit = 100 * MEGABYTE;
+                }
+                case MEDIA_DOCUMENT -> {
+                    acceptableExtensions = this.DOCUMENT_EXT;
+                    fileSizeLimit = 10 * MEGABYTE;
+                }
+                case MEDIA_AUDIO -> {
+                    acceptableExtensions = this.AUDIO_EXT;
+                    fileSizeLimit = 20 * MEGABYTE;
+                }
+                case GEO_JSON -> {
+                    acceptableExtensions = this.GEO_JSON_EXT;
+                    fileSizeLimit = 2 * MEGABYTE;
+                }
             }
         }
 
@@ -96,7 +98,7 @@ public class StorageService {
             throw new Exception(msgSrc.getMessage("error.file.empty", new String[]{originalFileName}, Locale.ENGLISH));
         }
         // 파일 확장자 적합성 검사
-        else if (acceptableExtensions == null || Arrays.stream(acceptableExtensions).noneMatch(
+        else if (acceptableExtensions != null && Arrays.stream(acceptableExtensions).noneMatch(
                 extension -> this.getFileExt(Objects.requireNonNull(uploadedFile.getOriginalFilename())).toLowerCase().equals(extension)
         )) {
             throw new Exception(msgSrc.getMessage("error.file.extension.valid", new String[]{originalFileName}, Locale.ENGLISH));
@@ -113,6 +115,20 @@ public class StorageService {
         generatedFileName = generatedFileName.replace(".file", "." + extension);
         Path fileFullPath = Paths.get(this.getEntityStoragePath(parentPath, entityName, entityId).toString(), generatedFileName);
         return fileFullPath.toFile();
+    }
+
+    // 공통 - 임시파일 저장
+    public String saveTempFile(MultipartFile uploadedFile) throws Exception {
+        // 파일 유효성 검사
+        this.checkFileValidity(uploadedFile, null);
+        String generatedFileName = this.generateFileName(uploadedFile.getOriginalFilename(), "temp", 0L);
+        Path fileFullPath = Paths.get(this.getTempStoragePath().toString(), generatedFileName);
+
+        // 파일 저장
+        uploadedFile.transferTo(fileFullPath);
+
+        // 파일 저장 경로 반환
+        return fileFullPath.toString();
     }
 
     // 공통 - 파일 저장
@@ -233,6 +249,11 @@ public class StorageService {
     // 공통 - 하위 엔티티 스토리지 경로 조회
     public Path getEntityStoragePath(Path parentEntityStoragePath, String subEntityName, Long subEntityId) {
         return Paths.get(parentEntityStoragePath.toString(), subEntityName, subEntityName + "_" + subEntityId);
+    }
+
+    // 공통 - 임시파일 스토리지 경로 조회
+    public Path getTempStoragePath() {
+        return Paths.get(System.getProperty("java.io.tmpdir"));
     }
 
     // 공통 - 엔티티 스토리지 삭제

@@ -1,9 +1,10 @@
 package com.sju.roomreservationbackend.domain.user.profile.services;
 
-import com.sju.roomreservationbackend.domain.user.profile.dto.request.CreateUserProfileReqDTO;
-import com.sju.roomreservationbackend.domain.user.profile.dto.request.UpdateUserPasswordReqDTO;
-import com.sju.roomreservationbackend.domain.user.profile.dto.request.UpdateUserPermissionReqDTO;
-import com.sju.roomreservationbackend.domain.user.profile.dto.request.UpdateUserProfileReqDTO;
+import com.sju.roomreservationbackend.common.exception.objects.DTOValidityException;
+import com.sju.roomreservationbackend.common.storage.StorageService;
+import com.sju.roomreservationbackend.domain.user.profile.dto.request.*;
+import com.sju.roomreservationbackend.domain.user.profile.dto.response.CreateUserProfileResDTO;
+import com.sju.roomreservationbackend.domain.user.profile.dto.response.ImportUserProfileResDTO;
 import com.sju.roomreservationbackend.domain.user.profile.entity.Permission;
 import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 import com.sju.roomreservationbackend.domain.user.profile.repository.UserProfileRepo;
@@ -20,8 +21,11 @@ import java.util.Locale;
 
 @Service
 public class UserProfileCrudServ extends UserProfileLogicServ implements UserProfileServCommon, UserProfileObservable {
-    public UserProfileCrudServ(UserProfileRepo userProfileRepo, PasswordEncoder pwEncoder) {
+    private final StorageService storageServ;
+
+    public UserProfileCrudServ(UserProfileRepo userProfileRepo, PasswordEncoder pwEncoder, StorageService storageServ) {
         super(userProfileRepo, pwEncoder);
+        this.storageServ = storageServ;
     }
 
     @Transactional
@@ -50,6 +54,34 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
                 .build();
 
         return userProfileRepo.save(userProfile);
+    }
+
+    @Transactional
+    public ImportUserProfileResDTO importUserProfile(ImportUserProfileReqDTO reqDTO) throws Exception {
+        String tempFilePath = storageServ.saveTempFile(reqDTO.getCsvFile());
+
+        List<CreateUserProfileReqDTO> requests = this.parsePlaceCSV(tempFilePath);
+        List<UserProfile> created = new ArrayList<>();
+        List<Integer> failedIdx = new ArrayList<>();
+
+        // Create User Entity
+        for (int i = 0 ; i < requests.size(); i++) {
+            try {
+                created.add(this.createUserProfile(requests.get(i)));
+            } catch (Exception e) {
+                if (e instanceof DTOValidityException) {
+                    failedIdx.add(i);
+                } else {
+                    throw e;
+                }
+            }
+        }
+
+        // Pack to DTO
+        ImportUserProfileResDTO resDTO = new ImportUserProfileResDTO();
+        resDTO.setImportedUserProfiles(created);
+        resDTO.setFailedIndices(failedIdx);
+        return resDTO;
     }
 
     @Override
