@@ -100,6 +100,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
     }
 
     public Page<Reservation> fetchReservationsByTimeRange(
+            Authentication auth,
             LocalDate startDate,
             LocalDate endDate,
             LocalTime startTime,
@@ -107,7 +108,14 @@ public class ReservationCrudServ extends ReservationLogicServ {
             int pageIdx,
             int pageLimit
     ) {
-        return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqual(startDate, endDate, startTime, endTime, PageRequest.of(pageIdx, pageLimit));
+        UserProfile user = userProfileCrudServ.fetchCurrentUser(auth);
+
+        // if user is admin, fetch all reservations
+        if(userProfileCrudServ.checkCurrentUserIsAdmin(auth)) {
+            return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqual(startDate, endDate, startTime, endTime, PageRequest.of(pageIdx, pageLimit));
+        } else {
+            return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqualAndRevOwnerIdOrAttendantsId(startDate, endDate, startTime, endTime, user.getId(), user.getId(), PageRequest.of(pageIdx, pageLimit));
+        }
     }
 
     @Transactional
