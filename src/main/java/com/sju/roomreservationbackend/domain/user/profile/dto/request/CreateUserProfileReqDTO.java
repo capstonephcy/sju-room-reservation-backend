@@ -32,6 +32,25 @@ public class CreateUserProfileReqDTO {
     @Size(max=50, message = "valid.user.department.size")
     private String department;
 
+    @PositiveOrZero(message = "valid.user.noshowcnt.positive")
+    private Integer noShowCnt;
+
     @NotNull(message = "valid.user.permission.null")
     private Permission permission;
+
+    public CreateUserProfileReqDTO parseFromCSVRow(String[] rawTexts, String encodedPw) {
+        StringBuilder phoneNumber = new StringBuilder();
+        phoneNumber.append(rawTexts[4]);
+        phoneNumber.insert(3, '-');
+        phoneNumber.insert(phoneNumber.length() - 4, '-');
+
+        this.username = rawTexts[0];
+        this.password = encodedPw;
+        this.name = rawTexts[2];
+        this.department = Integer.parseInt(rawTexts[3]) == 1 ? "컴퓨터공학과" : "기타학과";
+        this.phone = phoneNumber.toString();
+        this.email = rawTexts[5];
+        this.permission = Permission.values()[Integer.parseInt(rawTexts[6])];
+        return this;
+    }
 }

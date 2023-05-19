@@ -68,11 +68,14 @@ public class RoomCrudServ extends RoomLogicServ {
 
     @Transactional
     public Room updateRoom(UpdateRoomReqDTO reqDTO) throws Exception {
-        this.checkNameDuplication(reqDTO.getName());
+
 
         Room room = this.fetchRoomById(reqDTO.getId());
 
-        room.setName(reqDTO.getName() == null ? room.getName() : reqDTO.getName());
+        if (!room.getName().equals(reqDTO.getName())) {
+            this.checkNameDuplication(reqDTO.getName());
+            room.setName(reqDTO.getName() == null ? room.getName() : reqDTO.getName());
+        }
         room.setDescription(reqDTO.getName() == null ? room.getName() : reqDTO.getName());
         room.setCapacity(reqDTO.getCapacity() == null ? room.getCapacity() : reqDTO.getCapacity());
         room.setWhiteboard(reqDTO.getWhiteboard() == null ? room.getWhiteboard() : reqDTO.getWhiteboard());
