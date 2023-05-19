@@ -80,7 +80,7 @@ public class ReservationAPI {
                             resDTO.setTotalPage(resultPage.getTotalPages());
                         }
                         case TIME_RANGE -> {
-                            resultPage = reservationCrudServ.fetchReservationsByTimeRange(auth, reqDTO.getStartDate(), reqDTO.getEndDate(), reqDTO.getStartTime(), reqDTO.getEndTime(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
+                            resultPage = reservationCrudServ.fetchReservationsByTimeRange(reqDTO.getUserId(), reqDTO.getStartDate(), reqDTO.getEndDate(), reqDTO.getStartTime(), reqDTO.getEndTime(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
 
                             resDTO.setReservations(resultPage.getContent());
                             resDTO.setPageable(true);

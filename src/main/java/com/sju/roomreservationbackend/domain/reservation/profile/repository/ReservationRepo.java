@@ -2,6 +2,7 @@ package com.sju.roomreservationbackend.domain.reservation.profile.repository;
 
 import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
+import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,20 @@ import java.util.List;
 public interface ReservationRepo extends CrudRepository<Reservation, Long> {
     Page<Reservation> findAllByRoomId(Long roomId, Pageable pageable);
 
+    Page<Reservation> findAllByRevOwnerIdOrAttendantsId(Long userId, Long attendantId, Pageable pageable);
+
+    Page<Reservation> findAllByRegularRevId(Long regularRevId, Pageable pageable);
+
+    Page<Reservation> findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqualAndRevOwnerAndAttendantsContains(
+            LocalDate startDate,
+            LocalDate endDate,
+            LocalTime startTime,
+            LocalTime endTime,
+            UserProfile owner,
+            UserProfile attendant,
+            Pageable pageable
+    );
+
     // Find all matching reservations in a date range and time range
     Page<Reservation> findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqual(
             LocalDate startDate,
@@ -25,25 +40,10 @@ public interface ReservationRepo extends CrudRepository<Reservation, Long> {
             Pageable pageable
     );
 
-    // Find all matching reservations in a time range in a room
-    boolean existsByRoomAndDateAndStartGreaterThanEqualAndEndLessThanEqual(
-            Room room,
+    // Find all matching reservations in a time range
+    boolean existsByDateAndStartGreaterThanEqualAndEndLessThanEqual(
             LocalDate date,
             LocalTime start,
             LocalTime end
-    );
-
-    Page<Reservation> findAllByRevOwnerIdOrAttendantsId(Long userId, Long attendantId, Pageable pageable);
-
-    Page<Reservation> findAllByRegularRevId(Long regularRevId, Pageable pageable);
-
-    Page<Reservation> findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqualAndRevOwnerIdOrAttendantsId(
-            LocalDate startDate,
-            LocalDate endDate,
-            LocalTime startTime,
-            LocalTime endTime,
-            Long revOwnerId,
-            Long attendantId,
-            Pageable pageable
     );
 }

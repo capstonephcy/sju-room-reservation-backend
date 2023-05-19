@@ -74,11 +74,7 @@ public class RegularRevLogicServ {
             // else if monthly of regularRev is true, repeat generate revReqDto for every month
             case MONTHLY -> {
                 // calculate date's week of month and day of week
-                Calendar calWeek = Calendar.getInstance();
-                calWeek.set(Calendar.YEAR, repeatDate.getYear());
-                calWeek.set(Calendar.MONTH, repeatDate.getMonth().getValue());
-                calWeek.set(Calendar.DAY_OF_MONTH, repeatDate.getDayOfMonth());
-                int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
+                int ordinal = 4;
                 DayOfWeek dayOfWeek = repeatDate.getDayOfWeek();
 
                 for (int i = 0; i < regularRev.getIteration(); i++) {
@@ -91,7 +87,7 @@ public class RegularRevLogicServ {
                             regularRev
                     ));
                     // calculate date as weekOfMonth of next month
-                    TemporalAdjuster temporalAdjuster = TemporalAdjusters.dayOfWeekInMonth(weekOfMonth, dayOfWeek);
+                    TemporalAdjuster temporalAdjuster = TemporalAdjusters.dayOfWeekInMonth(ordinal, dayOfWeek);
                     // move to next month
                     repeatDate = repeatDate.plusMonths(1);
                     // adjust date as weekOfMonth of next month
