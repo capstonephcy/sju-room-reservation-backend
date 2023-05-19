@@ -36,4 +36,14 @@ public interface ReservationRepo extends CrudRepository<Reservation, Long> {
     Page<Reservation> findAllByRevOwnerIdOrAttendantsId(Long userId, Long attendantId, Pageable pageable);
 
     Page<Reservation> findAllByRegularRevId(Long regularRevId, Pageable pageable);
+
+    Page<Reservation> findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqualAndRevOwnerIdOrAttendantsId(
+            LocalDate startDate,
+            LocalDate endDate,
+            LocalTime startTime,
+            LocalTime endTime,
+            Long revOwnerId,
+            Long attendantId,
+            Pageable pageable
+    );
 }

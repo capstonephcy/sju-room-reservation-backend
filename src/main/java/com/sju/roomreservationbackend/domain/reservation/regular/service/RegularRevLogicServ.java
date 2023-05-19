@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -73,7 +74,11 @@ public class RegularRevLogicServ {
             // else if monthly of regularRev is true, repeat generate revReqDto for every month
             case MONTHLY -> {
                 // calculate date's week of month and day of week
-                int weekOfMonth = (repeatDate.getDayOfMonth() - 1) / 7 + 1;
+                Calendar calWeek = Calendar.getInstance();
+                calWeek.set(Calendar.YEAR, repeatDate.getYear());
+                calWeek.set(Calendar.MONTH, repeatDate.getMonth().getValue());
+                calWeek.set(Calendar.DAY_OF_MONTH, repeatDate.getDayOfMonth());
+                int weekOfMonth = calWeek.get(Calendar.WEEK_OF_MONTH);
                 DayOfWeek dayOfWeek = repeatDate.getDayOfWeek();
 
                 for (int i = 0; i < regularRev.getIteration(); i++) {

@@ -39,6 +39,7 @@ public class ReservationAPI {
     // 단건 예약 조회
     @GetMapping("/reservation/profiles")
     public ResponseEntity<?> fetchReservation(
+            Authentication auth,
             @Valid FetchReserveReqDTO reqDTO,
             @RequestHeader("Request-Type") FetchReserveReqOptionType optionType
     ) {
@@ -79,7 +80,7 @@ public class ReservationAPI {
                             resDTO.setTotalPage(resultPage.getTotalPages());
                         }
                         case TIME_RANGE -> {
-                            resultPage = reservationCrudServ.fetchReservationsByTimeRange(reqDTO.getStartDate(), reqDTO.getEndDate(), reqDTO.getStartTime(), reqDTO.getEndTime(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
+                            resultPage = reservationCrudServ.fetchReservationsByTimeRange(auth, reqDTO.getStartDate(), reqDTO.getEndDate(), reqDTO.getStartTime(), reqDTO.getEndTime(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
 
                             resDTO.setReservations(resultPage.getContent());
                             resDTO.setPageable(true);
