@@ -80,8 +80,7 @@ public class ReservationLogicServ {
 
     protected boolean isReservationIsDuplicated(Reservation reservation) {
         // check if reservation's time range is overlaps existing reservations in db.
-        return reservationRepo.existsByRoomAndDateAndStartGreaterThanEqualAndEndLessThanEqual(
-                reservation.getRoom(),
+        return reservationRepo.existsByDateAndStartGreaterThanEqualAndEndLessThanEqual(
                 reservation.getDate(),
                 reservation.getStart(),
                 reservation.getEnd()

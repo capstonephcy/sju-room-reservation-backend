@@ -48,6 +48,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
         for(Long id : reqDTO.getAttendants()) {
             attendants.add(userProfileCrudServ.fetchUserProfileById(id));
         }
+        attendants.add(user);
 
         // create check in code
         String checkInCode = generateCheckInCode();
@@ -100,21 +101,20 @@ public class ReservationCrudServ extends ReservationLogicServ {
     }
 
     public Page<Reservation> fetchReservationsByTimeRange(
-            Authentication auth,
+            Long userId,
             LocalDate startDate,
             LocalDate endDate,
             LocalTime startTime,
             LocalTime endTime,
             int pageIdx,
             int pageLimit
-    ) {
-        UserProfile user = userProfileCrudServ.fetchCurrentUser(auth);
-
-        // if user is admin, fetch all reservations
-        if(userProfileCrudServ.checkCurrentUserIsAdmin(auth)) {
+    ) throws Exception {
+        // if user is empty, fetch all reservations
+        if(userId == null) {
             return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqual(startDate, endDate, startTime, endTime, PageRequest.of(pageIdx, pageLimit));
         } else {
-            return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqualAndRevOwnerIdOrAttendantsId(startDate, endDate, startTime, endTime, user.getId(), user.getId(), PageRequest.of(pageIdx, pageLimit));
+            UserProfile user = userProfileCrudServ.fetchUserProfileById(userId);
+            return reservationRepo.findAllByDateBetweenAndStartGreaterThanEqualAndEndLessThanEqualAndRevOwnerAndAttendantsContains(startDate, endDate, startTime, endTime, user, user, PageRequest.of(pageIdx, pageLimit));
         }
     }
 
