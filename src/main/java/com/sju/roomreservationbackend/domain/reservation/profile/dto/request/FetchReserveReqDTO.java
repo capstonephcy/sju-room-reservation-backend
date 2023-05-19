@@ -1,14 +1,15 @@
 package com.sju.roomreservationbackend.domain.reservation.profile.dto.request;
 
 import com.sju.roomreservationbackend.common.http.GeneralPageableReqDTO;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class FetchReserveReqDTO extends GeneralPageableReqDTO {
     @PositiveOrZero(message = "valid.reservation.id.positive")
     private Long id;

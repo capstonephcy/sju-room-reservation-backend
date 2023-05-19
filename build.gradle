@@ -2,7 +2,7 @@
 //file:noinspection GroovyUnusedAssignment
 buildscript {
     ext {
-        queryDslVersion = '5.0.0'
+        queryDslVersion = "5.0.0"
     }
 }
 
@@ -35,6 +35,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework:spring-context-support'
 
+    implementation 'org.eclipse.angus:jakarta.mail:1.0.0'
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.1'
     implementation 'org.json:json:20230227'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
@@ -56,6 +58,7 @@ dependencies {
     implementation 'com.querydsl:querydsl-core:5.0.0'
     annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
     annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
