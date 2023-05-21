@@ -1,7 +1,6 @@
 package com.sju.roomreservationbackend.common.security;
 
 import com.sju.roomreservationbackend.domain.user.auth.services.UserAuthServ;
-import com.sju.roomreservationbackend.domain.user.profile.entity.Permission;
 import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,7 +10,6 @@ import lombok.NonNull;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 /* JWT 토큰 필터를 구현하는 클래스 */
