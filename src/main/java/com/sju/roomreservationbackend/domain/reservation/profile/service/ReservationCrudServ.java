@@ -7,6 +7,8 @@ import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservat
 import com.sju.roomreservationbackend.domain.reservation.profile.repository.ReservationRepo;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
 import com.sju.roomreservationbackend.domain.room.profile.services.RoomCrudServ;
+import com.sju.roomreservationbackend.domain.room.stat.entity.RoomAction;
+import com.sju.roomreservationbackend.domain.room.stat.service.RoomLogServ;
 import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 import com.sju.roomreservationbackend.domain.user.profile.services.UserProfileCrudServ;
 import jakarta.transaction.Transactional;
@@ -26,15 +28,18 @@ public class ReservationCrudServ extends ReservationLogicServ {
 
     private final UserProfileCrudServ userProfileCrudServ;
     private final RoomCrudServ roomCrudServ;
+    private final RoomLogServ roomLogServ;
 
     public ReservationCrudServ(
             ReservationRepo reservationRepo,
             UserProfileCrudServ userProfileCrudServ,
-            RoomCrudServ roomCrudServ
+            RoomCrudServ roomCrudServ,
+            RoomLogServ roomLogServ
     ) {
         super(reservationRepo);
         this.userProfileCrudServ = userProfileCrudServ;
         this.roomCrudServ = roomCrudServ;
+        this.roomLogServ = roomLogServ;
     }
 
     @Transactional
@@ -78,7 +83,18 @@ public class ReservationCrudServ extends ReservationLogicServ {
         }
 
         // create reservation
-        return reservationRepo.save(reservation);
+        reservation = reservationRepo.save(reservation);
+
+        // create room log for reservation creation
+        roomLogServ.createRoomLog(reservation.getRoom(), reservation.getRevOwner(), RoomAction.RESERVE);
+
+        // update rev owner and attendants reserveCnt
+        userProfileCrudServ.updateReserveCnt(reservation.getRevOwner());
+        for(UserProfile attendant : reservation.getAttendants()) {
+            userProfileCrudServ.updateReserveCnt(attendant);
+        }
+
+        return reservation;
     }
 
     public Reservation fetchReservationById(Long id) throws Exception {
@@ -156,6 +172,9 @@ public class ReservationCrudServ extends ReservationLogicServ {
 
         // delete reservation
         reservationRepo.delete(reservation);
+
+        // create room log for reservation deletion
+        roomLogServ.createRoomLog(reservation.getRoom(), reservation.getRevOwner(), RoomAction.CANCEL);
     }
 
     @Transactional
@@ -172,5 +191,18 @@ public class ReservationCrudServ extends ReservationLogicServ {
 
         // check in
         checkIn(reservation, reqDto.getCheckInCode());
+
+        // create room log for reservation check in
+        roomLogServ.createRoomLog(reservation.getRoom(), reservation.getRevOwner(), RoomAction.CHECKIN);
+    }
+
+    public List<Reservation> fetchReservationsByRoomAndDate(Room room, LocalDate date) {
+        return reservationRepo.findAllByRoomAndDate(room, date);
+    }
+
+    @Transactional
+    public void updateReservationNoShow(Reservation reservation) {
+        reservation.setNoShow(true);
+        reservationRepo.save(reservation);
     }
 }

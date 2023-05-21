@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+// RoomStat stores stats of reservation of specific room in specific day
 public class RoomStat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +25,13 @@ public class RoomStat {
     private Room room;
 
     @Column
+    private LocalDate date;
+
+    @Column
     private Integer revCnt;
-    private Integer regularRevCnt;
+    private Integer noShowCnt;
     private Double noShowRate;
-    private Double loadRate;
+    // private Double loadRate;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Integer> peakHours;

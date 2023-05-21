@@ -99,4 +99,8 @@ public class RoomCrudServ extends RoomLogicServ {
         roomRepo.delete(targetRoom);
         return targetRoom.getId();
     }
+
+    public List<Room> fetchAllRoom() {
+        return roomRepo.findAll();
+    }
 }

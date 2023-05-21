@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class FetchRoomReservationMetricsReqDTO {
+public class FetchRoomReservationStatsReqDTO {
     @NotNull(message = "valid.room.id.null")
     @PositiveOrZero(message = "valid.room.id.positive")
     private Long roomId;

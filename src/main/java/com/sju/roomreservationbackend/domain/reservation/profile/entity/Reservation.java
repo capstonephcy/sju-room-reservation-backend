@@ -57,4 +57,12 @@ public class Reservation {
     private String checkInCode;
     private Boolean checkIn;
     private Boolean noShow;
+
+    public boolean isCheckedIn() {
+        return checkIn;
+    }
+
+    public boolean isNoShow() {
+        return noShow;
+    }
 }
