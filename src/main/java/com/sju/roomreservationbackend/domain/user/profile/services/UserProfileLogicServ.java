@@ -26,7 +26,7 @@ public class UserProfileLogicServ implements UserProfileServCommon {
         List<CreateUserProfileReqDTO> profileCreateReqDTOs = new ArrayList<>();
 
         try (CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(new FileInputStream(filePath)))
-                .withSkipLines(2)
+                .withSkipLines(1)
                 .build()) {
 
             // Read Place Profile Data
@@ -36,7 +36,7 @@ public class UserProfileLogicServ implements UserProfileServCommon {
                 if (rawUserProfile != null) {
                     // Build Create DTO
                     CreateUserProfileReqDTO createDTO = new CreateUserProfileReqDTO();
-                    profileCreateReqDTOs.add(createDTO.parseFromCSVRow(rawUserProfile, pwEncoder.encode(rawUserProfile[4])));
+                    profileCreateReqDTOs.add(createDTO.parseFromCSVRow(rawUserProfile));
                 }
             } while (rawUserProfile != null);
             return profileCreateReqDTOs;

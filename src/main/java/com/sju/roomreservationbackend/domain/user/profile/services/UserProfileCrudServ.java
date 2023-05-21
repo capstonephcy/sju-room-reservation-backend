@@ -63,17 +63,15 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
         List<CreateUserProfileReqDTO> requests = this.parsePlaceCSV(tempFilePath);
         List<UserProfile> created = new ArrayList<>();
         List<Integer> failedIdx = new ArrayList<>();
+        List<String> failedErrorMsg = new ArrayList<>();
 
         // Create User Entity
         for (int i = 0 ; i < requests.size(); i++) {
             try {
                 created.add(this.createUserProfile(requests.get(i)));
             } catch (Exception e) {
-                if (e instanceof DTOValidityException) {
-                    failedIdx.add(i);
-                } else {
-                    throw e;
-                }
+                failedIdx.add(i);
+                failedErrorMsg.add(e.getLocalizedMessage());
             }
         }
 
@@ -81,6 +79,7 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
         ImportUserProfileResDTO resDTO = new ImportUserProfileResDTO();
         resDTO.setImportedUserProfiles(created);
         resDTO.setFailedIndices(failedIdx);
+        resDTO.setFailedErrorMsg(failedErrorMsg);
         return resDTO;
     }
 
