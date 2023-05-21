@@ -46,4 +46,6 @@ public interface ReservationRepo extends CrudRepository<Reservation, Long> {
             LocalTime start,
             LocalTime end
     );
+
+    List<Reservation> findAllByRoomAndDate(Room room, LocalDate date);
 }

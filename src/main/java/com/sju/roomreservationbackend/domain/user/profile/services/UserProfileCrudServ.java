@@ -139,4 +139,16 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
         UserProfile userProfile = this.fetchCurrentUser(auth);
         userProfileRepo.delete(userProfile);
     }
+
+    @Transactional
+    public void updateReserveCnt(UserProfile user) {
+        user.setReserveCnt(user.getReserveCnt() + 1);
+        userProfileRepo.save(user);
+    }
+
+    @Transactional
+    public void updateNoShowCnt(UserProfile user) {
+        user.setNoShowCnt(user.getNoShowCnt() + 1);
+        userProfileRepo.save(user);
+    }
 }
