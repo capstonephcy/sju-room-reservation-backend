@@ -12,4 +12,5 @@ import java.util.List;
 public class ImportUserProfileResDTO extends GeneralResDTO {
     private List<UserProfile> importedUserProfiles;
     private List<Integer> failedIndices;
+    private List<String> failedErrorMsg;
 }

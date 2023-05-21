@@ -36,13 +36,16 @@ public class UserProfileAPI {
     // 신규 사용자 계정 생성 (파일 임포트)
     @PostMapping("/users/profiles/csv")
     public ResponseEntity<?> createUserProfile(@Valid ImportUserProfileReqDTO reqDTO) {
-        final ImportUserProfileResDTO[] resDTO = new ImportUserProfileResDTO[1];
+        ImportUserProfileResDTO resDTO = new ImportUserProfileResDTO();
         return new APIUtil<ImportUserProfileResDTO>() {
             @Override
             protected void onSuccess() throws Exception {
-                resDTO[0] = userProfileCrudServ.importUserProfile(reqDTO);
+                ImportUserProfileResDTO result = userProfileCrudServ.importUserProfile(reqDTO);
+                resDTO.setImportedUserProfiles(result.getImportedUserProfiles());
+                result.setFailedIndices(result.getFailedIndices());
+                result.setFailedErrorMsg(result.getFailedErrorMsg());
             }
-        }.execute(resDTO[0], "res.user.import.success");
+        }.execute(resDTO, "res.user.import.success");
     }
 
     // 사용자 프로파일 조회

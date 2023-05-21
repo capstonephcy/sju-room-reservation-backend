@@ -38,14 +38,14 @@ public class CreateUserProfileReqDTO {
     @NotNull(message = "valid.user.permission.null")
     private Permission permission;
 
-    public CreateUserProfileReqDTO parseFromCSVRow(String[] rawTexts, String encodedPw) {
+    public CreateUserProfileReqDTO parseFromCSVRow(String[] rawTexts) {
         StringBuilder phoneNumber = new StringBuilder();
         phoneNumber.append(rawTexts[4]);
         phoneNumber.insert(3, '-');
         phoneNumber.insert(phoneNumber.length() - 4, '-');
 
         this.username = rawTexts[0];
-        this.password = encodedPw;
+        this.password = rawTexts[1];
         this.name = rawTexts[2];
         this.department = Integer.parseInt(rawTexts[3]) == 1 ? "컴퓨터공학과" : "기타학과";
         this.phone = phoneNumber.toString();
