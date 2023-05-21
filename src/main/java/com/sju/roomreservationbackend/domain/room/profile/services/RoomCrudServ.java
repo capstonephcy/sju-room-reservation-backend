@@ -43,7 +43,6 @@ public class RoomCrudServ extends RoomLogicServ {
                 .maxNormalTimeForStud(reqDTO.getMaxNormalTimeForStud())
                 .maxLooseTimeForGrad(reqDTO.getMaxLooseTimeForGrad())
                 .maxLooseTimeForStud(reqDTO.getMaxLooseTimeForStud())
-                .description(reqDTO.getDescription())
                 .build();
 
         room = roomRepo.save(room);
