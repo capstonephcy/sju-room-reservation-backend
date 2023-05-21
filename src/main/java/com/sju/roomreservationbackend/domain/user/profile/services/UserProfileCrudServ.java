@@ -1,9 +1,7 @@
 package com.sju.roomreservationbackend.domain.user.profile.services;
 
-import com.sju.roomreservationbackend.common.exception.objects.DTOValidityException;
 import com.sju.roomreservationbackend.common.storage.StorageService;
 import com.sju.roomreservationbackend.domain.user.profile.dto.request.*;
-import com.sju.roomreservationbackend.domain.user.profile.dto.response.CreateUserProfileResDTO;
 import com.sju.roomreservationbackend.domain.user.profile.dto.response.ImportUserProfileResDTO;
 import com.sju.roomreservationbackend.domain.user.profile.entity.Permission;
 import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
@@ -102,7 +100,7 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
                         userMsgSrc.getMessage("error.user.notExist", null, Locale.ENGLISH)
                 ));
     }
-    public List<UserProfile> fetchUserProfileByName(String name) throws Exception {
+    public List<UserProfile> fetchUserProfileByName(String name) {
         return userProfileRepo.findAllByName(name);
     }
     public List<UserProfile> fetchWaitingPermitProfile(Permission permission) {
