@@ -95,6 +95,10 @@ public class ReservationCrudServ extends ReservationLogicServ {
         return reservationRepo.findAllByRoomId(roomId, PageRequest.of(pageIdx, pageLimit));
     }
 
+    public Reservation fetchCurrentReservationByRoom(Long roomId) {
+        return reservationRepo.fetchCurrentReservationByRoomId(roomId);
+    }
+
     public Page<Reservation> fetchReservationsByRegularRevId(Long regularRevId, int pageIdx, int pageLimit) {
         return reservationRepo.findAllByRegularRevId(regularRevId, PageRequest.of(pageIdx, pageLimit));
     }

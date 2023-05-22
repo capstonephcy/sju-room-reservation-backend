@@ -9,6 +9,7 @@ public class JWTFilterRules {
     public static final String[] EXCLUDE_RULES = {
             "GET|/storage/**",
             "GET|/static/**",
+            "GET|/rooms/profiles/devices",
             "POST|/users/profiles",
             "POST|/users/auths/**",
             "POST|/users/recovery/**",

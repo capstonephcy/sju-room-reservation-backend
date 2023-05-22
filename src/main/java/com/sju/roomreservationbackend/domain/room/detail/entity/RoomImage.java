@@ -1,5 +1,6 @@
 package com.sju.roomreservationbackend.domain.room.detail.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sju.roomreservationbackend.common.base.media.FileMetadata;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
 import jakarta.persistence.*;
@@ -21,7 +22,11 @@ public class RoomImage extends FileMetadata {
     @Column(name = "room_img_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER, targetEntity = Room.class)
     @JoinColumn(name = "room_id", referencedColumnName = "room_id")
     private Room room;
+
+    @Column(name = "room_id", insertable = false, updatable = false)
+    private Long roomId;
 }
