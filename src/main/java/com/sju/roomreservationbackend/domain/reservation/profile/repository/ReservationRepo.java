@@ -4,17 +4,15 @@ import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservat
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
 import com.sju.roomreservationbackend.domain.user.profile.entity.UserProfile;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Repository
-public interface ReservationRepo extends CrudRepository<Reservation, Long> {
+public interface ReservationRepo extends CrudRepository<Reservation, Long>, ReservationDslRepo {
     Page<Reservation> findAllByRoomId(Long roomId, Pageable pageable);
 
     Page<Reservation> findAllByRevOwnerIdOrAttendantsId(Long userId, Long attendantId, Pageable pageable);

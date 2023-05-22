@@ -1,11 +1,10 @@
 package com.sju.roomreservationbackend.domain.room.profile;
 
 import com.sju.roomreservationbackend.common.http.APIUtil;
+import com.sju.roomreservationbackend.domain.reservation.profile.service.ReservationCrudServ;
+import com.sju.roomreservationbackend.domain.room.detail.service.RoomImgCrudServ;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.*;
-import com.sju.roomreservationbackend.domain.room.profile.dto.response.CreateRoomResDTO;
-import com.sju.roomreservationbackend.domain.room.profile.dto.response.DeleteRoomResDTO;
-import com.sju.roomreservationbackend.domain.room.profile.dto.response.FetchRoomResDTO;
-import com.sju.roomreservationbackend.domain.room.profile.dto.response.UpdateRoomResDTO;
+import com.sju.roomreservationbackend.domain.room.profile.dto.response.*;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
 import com.sju.roomreservationbackend.domain.room.profile.services.RoomCrudServ;
 import jakarta.validation.Valid;
@@ -15,10 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
 @RestController
 @AllArgsConstructor
 public class RoomAPI {
     private RoomCrudServ roomCrudServ;
+    private RoomImgCrudServ roomImgCrudServ;
+    private ReservationCrudServ reservationCrudServ;
 
     @PreAuthorize("hasAnyAuthority('ROOT_ADMIN', 'ADMIN')")
     @PostMapping("/rooms/profiles")
@@ -44,17 +47,37 @@ public class RoomAPI {
             @Override
             protected void onSuccess() throws Exception {
                 switch (reqOptionType) {
-                    case ID -> resDTO.setRoom(roomCrudServ.fetchRoomById(reqDTO.getId()));
-                    case NAME -> resDTO.setRooms(roomCrudServ.fetchRoomsByName(reqDTO.getName()));
+                    case ID -> {
+                        resDTO.setRoom(roomCrudServ.fetchRoomById(reqDTO.getId()));
+                        resDTO.setRoomImages(roomImgCrudServ.fetchRoomImgById(reqDTO.getId()));
+                    }
+                    case NAME -> {
+                        resDTO.setRooms(roomCrudServ.fetchRoomsByName(reqDTO.getName()));
+                        resDTO.setRoomsImages(roomImgCrudServ.fetchRoomImgByIds(resDTO.getRooms().stream().map(Room::getId).collect(Collectors.toList())));
+                    }
                     case BUILDING -> {
                         resultPage = roomCrudServ.fetchRoomsByBuilding(reqDTO.getBuilding(), reqDTO.getPageIdx(), reqDTO.getPageLimit());
                         resDTO.setRooms(resultPage.getContent());
+                        resDTO.setRoomsImages(roomImgCrudServ.fetchRoomImgByIds(resDTO.getRooms().stream().map(Room::getId).collect(Collectors.toList())));
                         resDTO.setPageable(true);
                         resDTO.setPageIdx(resultPage.getNumber());
                         resDTO.setPageElementSize(resultPage.getTotalElements());
                         resDTO.setTotalPage(resultPage.getTotalPages());
                     }
                 }
+            }
+        }.execute(resDTO, "res.room.fetch.success");
+    }
+
+    @GetMapping("/rooms/profiles/devices")
+    public ResponseEntity<?> fetchRoomForDevice(@Valid FetchRoomForDeviceReqDTO reqDTO) {
+        FetchRoomForDeviceResDTO resDTO = new FetchRoomForDeviceResDTO();
+
+        return new APIUtil<FetchRoomForDeviceResDTO>() {
+            @Override
+            protected void onSuccess() throws Exception {
+                resDTO.setRoom(roomCrudServ.fetchRoomById(reqDTO.getId()));
+                resDTO.setCurrentRev(reservationCrudServ.fetchCurrentReservationByRoom(reqDTO.getId()));
             }
         }.execute(resDTO, "res.room.fetch.success");
     }

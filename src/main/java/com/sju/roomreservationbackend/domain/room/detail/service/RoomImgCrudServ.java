@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomImgCrudServ extends RoomImgLogicServ{
@@ -46,6 +47,14 @@ public class RoomImgCrudServ extends RoomImgLogicServ{
                 .timestamp(LocalDateTime.now())
                 .build();
         return roomImgRepo.save(roomImg);
+    }
+
+    public List<RoomImage> fetchRoomImgById(Long roomId) {
+        return roomImgRepo.findAllByRoom_Id(roomId);
+    }
+
+    public List<List<RoomImage>> fetchRoomImgByIds(List<Long> roomIds) {
+        return roomIds.stream().map(id -> roomImgRepo.findAllByRoom_Id(id)).collect(Collectors.toList());
     }
 
     @Transactional
