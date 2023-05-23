@@ -33,6 +33,7 @@ public class Reservation {
     @JoinColumn(name = "user_id")
     private UserProfile revOwner;
 
+    // Attendant is a list of users who are attending the reservation including revOwner
     @Column
     // TODO(krapie): Change FetchType to LAZY, and configure new DTOs for fetching
     @ManyToMany(targetEntity = UserProfile.class, fetch = FetchType.EAGER)

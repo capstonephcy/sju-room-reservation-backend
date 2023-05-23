@@ -94,7 +94,9 @@ public class UserProfile implements UserDetails {
     @Column(nullable = false)
     private Boolean active;
 
-    
+    @Column
+    private String fcmRegistrationToken;
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -115,6 +115,7 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
         userProfile.setPhone(reqDTO.getPhone() == null ? userProfile.getPhone() : reqDTO.getPhone());
         userProfile.setName(reqDTO.getName() == null ? userProfile.getName() : reqDTO.getName());
         userProfile.setDepartment(reqDTO.getDepartment() == null ? userProfile.getDepartment() : reqDTO.getDepartment());
+        userProfile.setFcmRegistrationToken(reqDTO.getFcmRegistrationToken() == null ? userProfile.getFcmRegistrationToken() : reqDTO.getFcmRegistrationToken());
 
         return userProfileRepo.save(userProfile);
     }

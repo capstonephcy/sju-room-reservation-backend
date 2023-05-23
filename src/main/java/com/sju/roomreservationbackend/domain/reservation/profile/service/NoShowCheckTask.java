@@ -43,8 +43,7 @@ public class NoShowCheckTask implements Tasklet {
                     reservationCrudServ.updateReservationNoShow(reservation);
                     // create new room log for no show
                     roomLogServ.createRoomLog(room, reservation.getRevOwner(), RoomAction.NOSHOW);
-                    // increase reservation owner and attendees no show count
-                    userProfileCrudServ.updateNoShowCnt(reservation.getRevOwner());
+                    // increase reservation attendees no show count
                     for (UserProfile attendee : reservation.getAttendants()) {
                         userProfileCrudServ.updateNoShowCnt(attendee);
                     }

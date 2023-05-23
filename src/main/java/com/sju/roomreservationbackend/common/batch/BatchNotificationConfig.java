@@ -1,7 +1,9 @@
 package com.sju.roomreservationbackend.common.batch;
 
+import com.sju.roomreservationbackend.domain.notification.service.NotificationServ;
 import com.sju.roomreservationbackend.domain.reservation.profile.service.NoShowCheckTask;
 import com.sju.roomreservationbackend.domain.reservation.profile.service.ReservationCrudServ;
+import com.sju.roomreservationbackend.domain.reservation.profile.service.ReservationNotificationSendTask;
 import com.sju.roomreservationbackend.domain.room.profile.services.RoomCrudServ;
 import com.sju.roomreservationbackend.domain.room.stat.service.RoomLogServ;
 import com.sju.roomreservationbackend.domain.room.stat.service.RoomStatCreationTask;
@@ -28,28 +30,28 @@ import javax.sql.DataSource;
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
-public class BatchConfig {
-    private final DataSource dataSource;
+public class BatchNotificationConfig {
+    private final RoomCrudServ roomCrudServ;
+    private final ReservationCrudServ reservationCrudServ;
+    private final NotificationServ notificationServ;
 
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager getTransactionManager() {
-        return new JpaTransactionManager();
+    @Bean
+    public Tasklet sendReservationNotificationTask() {
+        return new ReservationNotificationSendTask(roomCrudServ, reservationCrudServ, notificationServ);
     }
 
-    @Bean(name = "jobRepository")
-    public JobRepository getJobRepository() throws Exception {
-        JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setTransactionManager(getTransactionManager());
-        factory.afterPropertiesSet();
-        return factory.getObject();
+    @Bean
+    public Step sendReservationNotification(JobRepository jobRepository, Tasklet sendReservationNotificationTask, PlatformTransactionManager transactionManager) {
+        return new StepBuilder("sendReservationNotification", jobRepository)
+                .tasklet(sendReservationNotificationTask, transactionManager)
+                .build();
     }
 
-    @Bean(name = "jobLauncher")
-    public JobLauncher getJobLauncher() throws Exception {
-        TaskExecutorJobLauncher jobLauncher = new TaskExecutorJobLauncher();
-        jobLauncher.setJobRepository(getJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
+    @Bean(name = "reservationNotificationBatchJob")
+    public Job reservationNotificationBatchJob(JobRepository jobRepository, Step sendReservationNotification) {
+        return new JobBuilder("reservationNotificationBatchJob", jobRepository)
+                .preventRestart()
+                .start(sendReservationNotification)
+                .build();
     }
 }

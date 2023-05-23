@@ -20,4 +20,6 @@ public class UpdateUserProfileReqDTO {
 
     @Size(max=50, message = "valid.user.department.size")
     private String department;
+
+    private String fcmRegistrationToken;
 }

@@ -12,6 +12,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Locale;
 
 @RequiredArgsConstructor
@@ -92,6 +93,12 @@ public class ReservationLogicServ {
     }
 
     protected void checkIn(Reservation reservation, String checkInCode) {
+        // check if reservation's date is same as today,
+        // and check current time is between reservation's start and end time
+        if(!LocalDate.now().isEqual(reservation.getDate()) || !LocalTime.now().isAfter(reservation.getStart()) || !LocalTime.now().isBefore(reservation.getEnd())) {
+            throw new IllegalArgumentException(reservationMsgSrc.getMessage("error.reservation.checkIn.expired", null, Locale.ENGLISH));
+        }
+
         // if verifyCode is same as reservation's verifyCode, update checkIn to true
         if(!reservation.getCheckInCode().equals(checkInCode)) {
             throw new IllegalArgumentException(reservationMsgSrc.getMessage("error.reservation.verificationCode.notMatch", null, Locale.ENGLISH));

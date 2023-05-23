@@ -37,7 +37,8 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/users/validation",
                 "messages/rooms/validation",
                 "messages/reservations/validation",
-                "messages/metrics/validation"
+                "messages/metrics/validation",
+                "messages/notification/validation"
         );
         return msgSrc;
     }
@@ -50,7 +51,8 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/rooms/response",
                 "messages/reservations/response",
                 "messages/storage/response",
-                "messages/metrics/response"
+                "messages/metrics/response",
+                "messages/notification/response"
         );
         return msgSrc;
     }
@@ -111,6 +113,18 @@ public class MessageConfig implements WebMvcConfigurer {
                 "messages/metrics/validation",
                 "messages/metrics/response",
                 "messages/metrics/error"
+        );
+        return msgSrc;
+    }
+
+    @Bean
+    public static MessageSource getNotificationMsgSrc() {
+        ReloadableResourceBundleMessageSource msgSrc = new ReloadableResourceBundleMessageSource();
+        msgSrc.setBasenames(
+                "messages/global/validation",
+                "messages/notification/validation",
+                "messages/notification/response",
+                "messages/notification/error"
         );
         return msgSrc;
     }
