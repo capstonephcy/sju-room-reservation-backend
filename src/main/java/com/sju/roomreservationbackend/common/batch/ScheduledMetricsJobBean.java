@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ScheduledJobBean {
+public class ScheduledMetricsJobBean {
     private final JobLauncher jobLauncher;
-    private final Job job;
+    private final Job reservationMetricsBatchJob;
 
     @Scheduled(cron = "0 0 0 * * *") // spring batch cron = seconds minutes hours day-of-month month day-of-week
-    public void perform() throws Exception
+    public void performReservationMetricsBatchJob() throws Exception
     {
         JobParameters params = new JobParametersBuilder()
-                .addString("JobID", String.valueOf(System.currentTimeMillis()))
+                .addString("ReservationMetricsBatchJobID", String.valueOf(System.currentTimeMillis()))
                 .toJobParameters();
 
-        jobLauncher.run(job, params);
+        jobLauncher.run(reservationMetricsBatchJob, params);
     }
 }

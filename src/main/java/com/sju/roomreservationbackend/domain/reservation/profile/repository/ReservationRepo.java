@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepo extends CrudRepository<Reservation, Long>, ReservationDslRepo {
@@ -46,4 +48,6 @@ public interface ReservationRepo extends CrudRepository<Reservation, Long>, Rese
     );
 
     List<Reservation> findAllByRoomAndDate(Room room, LocalDate date);
+
+    List<Reservation> findByRoomAndDateAndStartGreaterThanEqualAndStartLessThanEqual(Room room, LocalDate date, LocalTime timeBeforeStartTime, LocalTime timeAfterStartTime);
 }

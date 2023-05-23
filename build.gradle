@@ -36,6 +36,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'org.springframework:spring-context-support'
 
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
     implementation 'org.eclipse.angus:jakarta.mail:1.0.0'
     implementation 'jakarta.mail:jakarta.mail-api:2.1.1'
     implementation 'com.opencsv:opencsv:3.7'

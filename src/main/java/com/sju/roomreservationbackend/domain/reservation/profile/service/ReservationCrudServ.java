@@ -138,6 +138,21 @@ public class ReservationCrudServ extends ReservationLogicServ {
         }
     }
 
+    public List<Reservation> fetchReservationsByRoomAndDate(Room room, LocalDate date) {
+        return reservationRepo.findAllByRoomAndDate(room, date);
+    }
+
+    public List<Reservation> fetchReservationByRoomAndDateAndTimeLeft(Room room, LocalDate date, LocalTime timeBeforeStartTime, LocalTime timeAfterStartTime) {
+        // get reservation which date is today and reservation time range is [n] minutes later from now
+        List<Reservation> reservations = reservationRepo.findByRoomAndDateAndStartGreaterThanEqualAndStartLessThanEqual(room, date, timeBeforeStartTime, timeAfterStartTime);
+
+        // then, to prevent multiple notification sent and only send notification at first [n] minutes left before start time,
+        // check if current time has passed reservation start time + 1 minute, which is batch job interval
+        reservations.removeIf(reservation -> timeAfterStartTime.isAfter(reservation.getStart().plusMinutes(1)));
+
+        return reservations;
+    }
+
     @Transactional
     public Reservation updateReservation(Authentication auth, UpdateReserveReqDTO reqDTO) throws Exception {
         UserProfile user = userProfileCrudServ.fetchCurrentUser(auth);
@@ -174,11 +189,20 @@ public class ReservationCrudServ extends ReservationLogicServ {
             throw new IllegalArgumentException("error.reservation.notOwner");
         }
 
+        // check if current time is passed reservation's end time
+        if(reservationTimePassed(reservation)) {
+            throw new IllegalArgumentException("error.reservation.alreadyPassed");
+        }
+
         // delete reservation
         reservationRepo.delete(reservation);
 
         // create room log for reservation deletion
         roomLogServ.createRoomLog(reservation.getRoom(), reservation.getRevOwner(), RoomAction.CANCEL);
+    }
+
+    private boolean reservationTimePassed(Reservation reservation) {
+        return LocalDate.now().isAfter(reservation.getDate()) || LocalTime.now().isAfter(reservation.getEnd());
     }
 
     @Transactional
@@ -198,10 +222,6 @@ public class ReservationCrudServ extends ReservationLogicServ {
 
         // create room log for reservation check in
         roomLogServ.createRoomLog(reservation.getRoom(), reservation.getRevOwner(), RoomAction.CHECKIN);
-    }
-
-    public List<Reservation> fetchReservationsByRoomAndDate(Room room, LocalDate date) {
-        return reservationRepo.findAllByRoomAndDate(room, date);
     }
 
     @Transactional

@@ -64,3 +64,6 @@ application-dev-krapie.properties
 
 # Misc
 .DS_Store
+
+# Firebase
+/src/main/resources/capstone-5641d-firebase-adminsdk.json
