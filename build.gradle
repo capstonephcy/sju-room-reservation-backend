@@ -10,6 +10,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.4'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.google.cloud.tools.jib' version '3.3.2'
 }
 
 group = 'com.sju'
@@ -78,4 +79,16 @@ tasks.named('test') {
 
 clean {
     delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성위치
+}
+
+jib {
+    from {
+        image = 'openjdk:17-jdk-alpine'
+    }
+    to {
+        image = "wlghks0314/sju-capstone-room-reservation-server"
+        tags = ["latest"]
+    }
+    container {
+    }
 }
