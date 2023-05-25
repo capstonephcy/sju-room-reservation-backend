@@ -75,7 +75,7 @@ public class RoomCrudServ extends RoomLogicServ {
             this.checkNameDuplication(reqDTO.getName());
             room.setName(reqDTO.getName() == null ? room.getName() : reqDTO.getName());
         }
-        room.setDescription(reqDTO.getName() == null ? room.getName() : reqDTO.getName());
+        room.setDescription(reqDTO.getDescription() == null ? room.getDescription() : reqDTO.getDescription());
         room.setCapacity(reqDTO.getCapacity() == null ? room.getCapacity() : reqDTO.getCapacity());
         room.setWhiteboard(reqDTO.getWhiteboard() == null ? room.getWhiteboard() : reqDTO.getWhiteboard());
         room.setProjector(reqDTO.getProjector() == null ? room.getProjector() : reqDTO.getProjector());
