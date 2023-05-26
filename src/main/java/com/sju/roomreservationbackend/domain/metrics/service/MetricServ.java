@@ -65,6 +65,10 @@ public class MetricServ {
         return roomStatServ.fetchRoomReservationStats(roomId);
     }
 
+    public List<RoomStat> fetchRoomReservationStatsByDateRange(Long roomId, LocalDate startDate, LocalDate endDate) {
+        return roomStatServ.fetchRoomReservationStatsByRoomAndDateRange(roomId, startDate, endDate);
+    }
+
     public Page<RoomLog> fetchRoomReservationLogs(Long roomId, int pageIdx, int pageLimit) {
         return roomLogServ.fetchRoomReservationLogs(roomId, pageIdx, pageLimit);
     }
