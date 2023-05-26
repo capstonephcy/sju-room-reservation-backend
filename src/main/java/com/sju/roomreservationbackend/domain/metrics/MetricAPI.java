@@ -44,6 +44,7 @@ public class MetricAPI {
                     case WEEKLY -> resDTO.setRoomStat(metricServ.fetchRoomReservationStatsByWeek(reqDTO.getRoomId(), reqDTO.getDate()));
                     case MONTHLY -> resDTO.setRoomStat(metricServ.fetchRoomReservationStatsByMonth(reqDTO.getRoomId(), reqDTO.getDate()));
                     case ALL -> resDTO.setRoomStat(metricServ.fetchRoomReservationStats(reqDTO.getRoomId(), reqDTO.getDate()));
+                    case TIME_RANGE -> resDTO.setRoomStats(metricServ.fetchRoomReservationStatsByDateRange(reqDTO.getRoomId(), reqDTO.getDate(), reqDTO.getEndDate()));
                     default -> throw new Exception(
                             msgSrc.getMessage("valid.binding", null, Locale.ENGLISH)
                     );

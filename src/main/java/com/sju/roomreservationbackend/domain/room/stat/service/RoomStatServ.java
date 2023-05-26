@@ -34,4 +34,8 @@ public class RoomStatServ {
     public List<RoomStat> fetchRoomReservationStatsByRoomAndTimeRange(Long roomId, LocalDate startOfWeek, LocalDate endOfWeek) {
         return roomStatRepo.findAllByRoomIdAndDateBetween(roomId, startOfWeek, endOfWeek);
     }
+
+    public List<RoomStat> fetchRoomReservationStatsByRoomAndDateRange(Long roomId, LocalDate startDate, LocalDate endDate) {
+        return roomStatRepo.findAllByRoomIdAndDateBetween(roomId, startDate, endDate);
+    }
 }

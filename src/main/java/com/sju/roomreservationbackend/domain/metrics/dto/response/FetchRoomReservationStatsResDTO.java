@@ -5,6 +5,8 @@ import com.sju.roomreservationbackend.domain.room.stat.entity.RoomStat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class FetchRoomReservationStatsResDTO extends GeneralResDTO {
@@ -12,9 +14,15 @@ public class FetchRoomReservationStatsResDTO extends GeneralResDTO {
     private Integer noShowCnt;
     private Double noShowRate;
 
+    private List<RoomStat> roomStats;
+
     public void setRoomStat(RoomStat roomStat) {
         this.revCnt = roomStat.getRevCnt();
         this.noShowCnt = roomStat.getNoShowCnt();
         this.noShowRate = roomStat.getNoShowRate();
+    }
+
+    public void setRoomStats(List<RoomStat> roomStats) {
+        this.roomStats = roomStats;
     }
 }

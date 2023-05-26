@@ -13,4 +13,5 @@ public class FetchRoomReservationStatsReqDTO {
     private Long roomId;
 
     private LocalDate date;
+    private LocalDate endDate;
 }
