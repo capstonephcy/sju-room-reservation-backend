@@ -80,7 +80,7 @@ public class RoomAPI {
                 resDTO.setRoom(roomCrudServ.fetchRoomById(reqDTO.getId()));
                 Reservation reservation = reservationCrudServ.fetchCurrentReservationByRoom(reqDTO.getId());
                 resDTO.setCurrentRev(reservation);
-                resDTO.setCode(reservation.getCheckInCode());
+                resDTO.setCode(reservation != null ? reservation.getCheckInCode() : null);
             }
         }.execute(resDTO, "res.room.fetch.success");
     }
