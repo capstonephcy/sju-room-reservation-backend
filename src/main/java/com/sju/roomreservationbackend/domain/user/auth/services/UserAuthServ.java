@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 
 @Service
@@ -49,7 +50,7 @@ public class UserAuthServ implements UserDetailsService, UserProfileServCommon {
         }
 
         // 마지막 로그인 일자 갱신
-        profile.setLastLoginAt(LocalDateTime.now());
+        profile.setLastLoginAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
 
         return profile;
     }
@@ -61,7 +62,7 @@ public class UserAuthServ implements UserDetailsService, UserProfileServCommon {
         // 기존에 유효한 리프레시 토큰이 있는지 확인
         // 유효함의 기준: username이 동일하고, 로그아웃되지 않았으며, 만료일이 미래인 토큰
         RefreshToken activeRefreshToken = refreshTokenRepo.findByUsernameAndLoggedOutAndExpiredAtGreaterThan(
-                profile.getUsername(), false, LocalDateTime.now()
+                profile.getUsername(), false, LocalDateTime.now(ZoneId.of("Asia/Seoul"))
         ).orElse(null);
 
         // 로그아웃 실시

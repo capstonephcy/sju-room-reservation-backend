@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import static com.sju.roomreservationbackend.domain.reservation.profile.entity.QReservation.reservation;
 
@@ -17,8 +18,8 @@ public class ReservationRepoImpl implements ReservationDslRepo{
 
     @Override
     public Reservation fetchCurrentReservationByRoomId(Long roomId) {
-        LocalDate currentDate = LocalDate.now();
-        LocalTime currentTime = LocalTime.now();
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        LocalTime currentTime = LocalTime.now(ZoneId.of("Asia/Seoul"));
         return queryFactory.select(reservation).from(reservation)
                 .where(reservation.room.id.eq(roomId)
                         .and(reservation.date.eq(currentDate))

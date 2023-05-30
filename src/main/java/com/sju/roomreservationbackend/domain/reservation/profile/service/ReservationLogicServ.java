@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Locale;
 
 @RequiredArgsConstructor
@@ -37,11 +38,11 @@ public class ReservationLogicServ {
         // 2. check if user is allowed to reserve at this point of date
         if(user.getPermissions().contains(Permission.GRADUATED)) {
             // if user is graduated, user can reserve up to 1-week period
-            return reservation.getDate().isBefore(LocalDate.now().plusDays(7));
+            return reservation.getDate().isBefore(LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(7));
         }
         if(user.getPermissions().contains(Permission.STUDENT)) {
             // if user is student, user can reserve before 2 days period
-            return reservation.getDate().isBefore(LocalDate.now().plusDays(2));
+            return reservation.getDate().isBefore(LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(2));
         }
 
         // 3. check room's state (max/normal/loose), and check if user is allowed to reserve
@@ -95,7 +96,7 @@ public class ReservationLogicServ {
     protected void checkIn(Reservation reservation, String checkInCode) {
         // check if reservation's date is same as today,
         // and check current time is between reservation's start and end time
-        if(!LocalDate.now().isEqual(reservation.getDate()) || !LocalTime.now().isAfter(reservation.getStart()) || !LocalTime.now().isBefore(reservation.getEnd())) {
+        if(!LocalDate.now(ZoneId.of("Asia/Seoul")).isEqual(reservation.getDate()) || !LocalTime.now(ZoneId.of("Asia/Seoul")).isAfter(reservation.getStart()) || !LocalTime.now(ZoneId.of("Asia/Seoul")).isBefore(reservation.getEnd())) {
             throw new IllegalArgumentException(reservationMsgSrc.getMessage("error.reservation.checkIn.expired", null, Locale.ENGLISH));
         }
 

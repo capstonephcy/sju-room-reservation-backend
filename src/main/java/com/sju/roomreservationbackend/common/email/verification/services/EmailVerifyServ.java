@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @Service
@@ -25,7 +26,7 @@ public class EmailVerifyServ implements EmailVerifyServObservable {
         emailVerifyRepo.findByEmail(email).ifPresent(this.emailVerifyRepo::delete);
 
         // 이메일 인증번호 만료시간 산출
-        LocalDateTime expiredTime = LocalDateTime.now().plus(10, ChronoUnit.MINUTES);
+        LocalDateTime expiredTime = LocalDateTime.now(ZoneId.of("Asia/Seoul")).plus(10, ChronoUnit.MINUTES);
 
         // 이메일 인증요청 리스트에 추가
         EmailVerifyLog log = EmailVerifyLog.builder()
@@ -43,7 +44,7 @@ public class EmailVerifyServ implements EmailVerifyServObservable {
     public boolean checkAuthCode(String email, String authCode) {
         // 이메일 인증코드 검사
         EmailVerifyLog log = this.emailVerifyRepo.findByEmailAndVerifiedIsFalse(email).orElse(null);
-        boolean checkResult = log != null && log.getCode().equals(authCode) && LocalDateTime.now().isBefore(log.getValidUntil());
+        boolean checkResult = log != null && log.getCode().equals(authCode) && LocalDateTime.now(ZoneId.of("Asia/Seoul")).isBefore(log.getValidUntil());
         if (log != null) {
             log.setVerified(checkResult);
         }

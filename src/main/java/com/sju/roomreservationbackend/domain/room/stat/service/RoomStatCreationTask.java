@@ -14,6 +14,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class RoomStatCreationTask implements Tasklet {
         List<Room> rooms = roomCrudServ.fetchAllRoom();
         // for each room
         for (Room room : rooms) {
-            LocalDate previousDate = LocalDate.now().minusDays(1);
+            LocalDate previousDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(1);
             // create room stat
             RoomStat roomStat = RoomStat.builder()
                     .room(room)

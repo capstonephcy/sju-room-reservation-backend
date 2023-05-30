@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -167,7 +168,7 @@ public class StorageService {
                 .fileName(savePath.getFileName().toString())
                 .fileURL("/storage" + savePath.toString().replace(this.storageRootPath, "").replace("\\", "/"))
                 .fileSize(fileSize)
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
     }
 

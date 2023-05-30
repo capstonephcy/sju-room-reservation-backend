@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
@@ -110,7 +111,7 @@ public class JWTTokenProvider {
 
         // DB에 저장한 토큰 비교
         RefreshToken refreshToken = refreshTokenRepo.findByUsernameAndLoggedOutAndExpiredAtGreaterThan(
-                profile.getUsername(), false, LocalDateTime.now()
+                profile.getUsername(), false, LocalDateTime.now(ZoneId.of("Asia/Seoul"))
         ).orElse(null);
 
         // 리프레시 토큰 존재 여부 & 로그아웃 여부 & 토큰값 일치 검사

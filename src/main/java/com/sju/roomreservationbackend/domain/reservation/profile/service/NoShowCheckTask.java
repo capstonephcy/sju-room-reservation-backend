@@ -14,6 +14,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class NoShowCheckTask implements Tasklet {
         // for each room
         for (Room room : rooms) {
             // get all reservations from previous day
-            List<Reservation> reservations = reservationCrudServ.fetchReservationsByRoomAndDate(room, LocalDate.now().minusDays(1));
+            List<Reservation> reservations = reservationCrudServ.fetchReservationsByRoomAndDate(room, LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(1));
 
             // for each reservation
             for (Reservation reservation : reservations) {

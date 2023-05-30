@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,8 +44,8 @@ public class RoomLogServ {
                 .room(room)
                 .user(revOwner)
                 .action(reserve)
-                .date(LocalDate.now())
-                .time(LocalTime.now())
+                .date(LocalDate.now(ZoneId.of("Asia/Seoul")))
+                .time(LocalTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
 
         roomLogRepo.save(roomLog);
