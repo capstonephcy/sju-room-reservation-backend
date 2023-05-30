@@ -13,4 +13,5 @@ import java.util.List;
 public class FetchRoomForDeviceResDTO extends GeneralPageableResDTO {
     private Room room;
     private Reservation currentRev;
+    private String code;
 }
