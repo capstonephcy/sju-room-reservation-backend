@@ -1,6 +1,7 @@
 package com.sju.roomreservationbackend.domain.room.profile;
 
 import com.sju.roomreservationbackend.common.http.APIUtil;
+import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.reservation.profile.service.ReservationCrudServ;
 import com.sju.roomreservationbackend.domain.room.detail.service.RoomImgCrudServ;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.*;
@@ -77,7 +78,9 @@ public class RoomAPI {
             @Override
             protected void onSuccess() throws Exception {
                 resDTO.setRoom(roomCrudServ.fetchRoomById(reqDTO.getId()));
-                resDTO.setCurrentRev(reservationCrudServ.fetchCurrentReservationByRoom(reqDTO.getId()));
+                Reservation reservation = reservationCrudServ.fetchCurrentReservationByRoom(reqDTO.getId());
+                resDTO.setCurrentRev(reservation);
+                resDTO.setCode(reservation.getCheckInCode());
             }
         }.execute(resDTO, "res.room.fetch.success");
     }
