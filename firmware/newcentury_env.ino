@@ -71,16 +71,16 @@ void loop() {
 
         if (data.empty) {
           u8g2.setCursor(0, 44);
-          u8g2.print("예약자: " + data.revOwnerName);
-
-          u8g2.setCursor(0, 60);
-          u8g2.print("인증No: " + data.checkInCode);
-        } else {
-          u8g2.setCursor(0, 44);
           u8g2.print("예약 정보 없음");
 
           u8g2.setCursor(0, 60);
           u8g2.print("(공실입니다)");
+        } else {
+          u8g2.setCursor(0, 44);
+          u8g2.print("예약자: " + data.revOwnerName);
+
+          u8g2.setCursor(0, 60);
+          u8g2.print("인증No: " + data.checkInCode);
         }
       } else {
         u8g2.setFont(u8g2_font_squeezed_r6_tr);
