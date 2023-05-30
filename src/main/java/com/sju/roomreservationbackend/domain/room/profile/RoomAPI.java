@@ -78,9 +78,8 @@ public class RoomAPI {
             @Override
             protected void onSuccess() throws Exception {
                 resDTO.setRoom(roomCrudServ.fetchRoomById(reqDTO.getId()));
-                Reservation reservation = reservationCrudServ.fetchCurrentReservationByRoom(reqDTO.getId());
-                resDTO.setCurrentRev(reservation);
-                resDTO.setCode(reservation != null ? reservation.getCheckInCode() : null);
+                resDTO.setCurrentRev(reservationCrudServ.fetchCurrentReservationByRoom(reqDTO.getId()));
+                resDTO.setCode(resDTO.getCurrentRev() != null ? resDTO.getCurrentRev().getCheckInCode() : null);
             }
         }.execute(resDTO, "res.room.fetch.success");
     }
