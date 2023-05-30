@@ -14,6 +14,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ReservationNotificationSendTask implements Tasklet {
         }
 
         // get reservation which date is today and reservation time range is [n] minutes later from now
-        List<Reservation> reservations = reservationCrudServ.fetchReservationByRoomAndDateAndTimeLeft(room, LocalDate.now(), LocalTime.now(), LocalTime.now().plusMinutes(minutes));
+        List<Reservation> reservations = reservationCrudServ.fetchReservationByRoomAndDateAndTimeLeft(room, LocalDate.now(ZoneId.of("Asia/Seoul")), LocalTime.now(ZoneId.of("Asia/Seoul")), LocalTime.now(ZoneId.of("Asia/Seoul")).plusMinutes(minutes));
 
         for (Reservation reservation : reservations) {
             // for every attendant, get id

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -202,7 +203,7 @@ public class ReservationCrudServ extends ReservationLogicServ {
     }
 
     private boolean reservationTimePassed(Reservation reservation) {
-        return LocalDate.now().isAfter(reservation.getDate()) || LocalTime.now().isAfter(reservation.getEnd());
+        return LocalDate.now(ZoneId.of("Asia/Seoul")).isAfter(reservation.getDate()) || LocalTime.now(ZoneId.of("Asia/Seoul")).isAfter(reservation.getEnd());
     }
 
     @Transactional

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 @Service
@@ -38,7 +39,7 @@ public class UserTokenServ {
 
     public RefreshToken fetchActiveRefreshToken(UserProfile profile) {
         return refreshTokenRepo.findByUsernameAndLoggedOutAndExpiredAtGreaterThan(
-                profile.getUsername(), false, LocalDateTime.now()
+                profile.getUsername(), false, LocalDateTime.now(ZoneId.of("Asia/Seoul"))
         ).orElse(null);
     }
 

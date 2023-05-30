@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +47,7 @@ public class UserProfileCrudServ extends UserProfileLogicServ implements UserPro
                 .noShowRate(0.0d)
                 .reserveCnt(0)
                 .noShowCnt(0)
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .permissions(perms)
                 .active(reqDTO.getPermission() == Permission.STUDENT)
                 .build();

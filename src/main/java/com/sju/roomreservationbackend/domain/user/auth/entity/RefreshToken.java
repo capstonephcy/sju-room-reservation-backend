@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 @Entity
@@ -42,8 +43,8 @@ public class RefreshToken {
         this.refreshToken = token;
         this.username = username;
         this.ipAddress = ipAddress;
-        this.issuedAt = LocalDateTime.now();
-        this.expiredAt = LocalDateTime.now().plusSeconds(JWTTokenProvider.JWT_REFRESH_TOKEN_VALIDITY);
+        this.issuedAt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.expiredAt = LocalDateTime.now(ZoneId.of("Asia/Seoul")).plusSeconds(JWTTokenProvider.JWT_REFRESH_TOKEN_VALIDITY);
         this.loggedOut = false;
     }
 
