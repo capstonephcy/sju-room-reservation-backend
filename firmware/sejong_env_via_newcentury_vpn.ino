@@ -8,7 +8,7 @@
 // for SPI
 #include <SPI.h>
 
-char* ssid = "NewCentury";    //wift 아이디
+char* ssid = "NewCenturyVPN";    //wifi 아이디
 char* password =  "**-*******";    // wifi 비번
 char* serverName = "http://211.180.114.56/api/rooms/profiles/devices?id=9"; // 웹서버주소 (id 다음에 룸 넘버 설정)
 
