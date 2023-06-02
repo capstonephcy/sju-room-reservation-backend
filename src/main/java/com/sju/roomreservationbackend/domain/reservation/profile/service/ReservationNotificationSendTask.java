@@ -52,11 +52,7 @@ public class ReservationNotificationSendTask implements Tasklet {
         }
 
         // get reservation which date is today and reservation time range is [n] minutes later from now
-<<<<<<< HEAD
-        List<Reservation> reservations = reservationCrudServ.fetchReservationByRoomAndDateAndTimeLeft(room, LocalDate.now(ZoneId.of("Asia/Seoul")), LocalTime.now(ZoneId.of("Asia/Seoul")), LocalTime.now(ZoneId.of("Asia/Seoul")).plusMinutes(minutes));
-=======
-        List<Reservation> reservations = reservationCrudServ.fetchReservationByRoomAndDateAndTimeLeft(room, LocalDate.now(), LocalTime.now().plusMinutes(minutes));
->>>>>>> 4ce8a4e (Revise metric logics)
+        List<Reservation> reservations = reservationCrudServ.fetchReservationByRoomAndDateAndTimeLeft(room, LocalDate.now(ZoneId.of("Asia/Seoul")), LocalTime.now().plusMinutes(minutes));
 
         for (Reservation reservation : reservations) {
             // for every attendant, get id
