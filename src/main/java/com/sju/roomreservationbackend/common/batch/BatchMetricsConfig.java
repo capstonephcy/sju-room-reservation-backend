@@ -44,7 +44,7 @@ public class BatchMetricsConfig {
 
     @Bean
     public Tasklet createRoomStatTask() {
-        return new RoomStatCreationTask(roomCrudServ, roomLogServ, roomStatServ);
+        return new RoomStatCreationTask(roomCrudServ, roomLogServ, roomStatServ, reservationCrudServ);
     }
 
     @Bean
@@ -58,6 +58,15 @@ public class BatchMetricsConfig {
     public Step createRoomStats(JobRepository jobRepository, Tasklet createRoomStatTask, PlatformTransactionManager transactionManager) {
         return new StepBuilder("createRoomStat", jobRepository)
                 .tasklet(createRoomStatTask, transactionManager)
+                .build();
+    }
+
+    @Bean(name = "reservationMetricsBatchJob")
+    public Job reservationNotificationBatchJob(JobRepository jobRepository, Step checkNoShowRooms, Step createRoomStats) {
+        return new JobBuilder("reservationMetricsBatchJob", jobRepository)
+                .preventRestart()
+                .start(checkNoShowRooms)
+                .next(createRoomStats)
                 .build();
     }
 }

@@ -18,7 +18,7 @@ ssh capstone6@211.180.114.56
 3. MySQL docker container 실행
 
 ```bash
-docker run --name capstone6-mysql -e MYSQL_ROOT_PASSWORD=[ROOT_PASSWORD] -d -p 3306:3306 mysql
+docker run --name capstone6-mysql -e MYSQL_ROOT_PASSWORD=[ROOT_PASSWORD] -d -p 3306:3306 mysql -v $(pwd)/mysql:/var/lib/mysql
 ```
 
 4. MySQL 로그인 후 DB 셋업

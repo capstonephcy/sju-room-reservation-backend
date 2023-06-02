@@ -31,7 +31,7 @@ public class RoomStat {
     private Integer revCnt;
     private Integer noShowCnt;
     private Double noShowRate;
-    // private Double loadRate;
+    private Double loadRate;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Integer> peakHours;

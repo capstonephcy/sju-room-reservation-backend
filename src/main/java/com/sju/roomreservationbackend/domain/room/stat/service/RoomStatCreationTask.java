@@ -1,5 +1,6 @@
 package com.sju.roomreservationbackend.domain.room.stat.service;
 
+import com.sju.roomreservationbackend.domain.reservation.profile.entity.Reservation;
 import com.sju.roomreservationbackend.domain.reservation.profile.service.ReservationCrudServ;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
 import com.sju.roomreservationbackend.domain.room.profile.services.RoomCrudServ;
@@ -23,6 +24,8 @@ public class RoomStatCreationTask implements Tasklet {
     private final RoomCrudServ roomCrudServ;
     private final RoomLogServ roomLogServ;
     private final RoomStatServ roomStatServ;
+
+    private final ReservationCrudServ reservationCrudServ;
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
@@ -57,7 +60,23 @@ public class RoomStatCreationTask implements Tasklet {
                 }
             }
             // 3. room stat's noShowRate = noShowCnt / revCnt
-            roomStat.setNoShowRate((double) roomStat.getNoShowCnt() / roomStat.getRevCnt());
+            double noShowRate = 0;
+            if (roomStat.getRevCnt() != 0) {
+                noShowRate = (double) roomStat.getNoShowCnt() / roomStat.getRevCnt();
+            }
+            roomStat.setNoShowRate(noShowRate);
+
+            // 4. room stat's loadRate
+            // get all reservations for previousDate
+            // add up all time ranges of reservations by minutes
+            // divide by 24 * 60
+            List<Reservation> reservations = reservationCrudServ.fetchReservationsByRoomAndDate(room, previousDate);
+            double loadRate = 0;
+            for (Reservation reservation : reservations) {
+                loadRate += reservation.getEnd().getHour() * 60 + reservation.getEnd().getMinute() - reservation.getStart().getHour() * 60 - reservation.getStart().getMinute();
+            }
+            loadRate /= 24 * 60;
+            roomStat.setLoadRate(loadRate);
 
             // save room stat
             roomStatServ.createRoomStat(roomStat);
