@@ -49,5 +49,5 @@ public interface ReservationRepo extends CrudRepository<Reservation, Long>, Rese
 
     List<Reservation> findAllByRoomAndDate(Room room, LocalDate date);
 
-    List<Reservation> findByRoomAndDateAndStartGreaterThanEqualAndStartLessThanEqual(Room room, LocalDate date, LocalTime timeBeforeStartTime, LocalTime timeAfterStartTime);
+    List<Reservation> findByRoomAndDateAndStart(Room room, LocalDate date, LocalTime time);
 }

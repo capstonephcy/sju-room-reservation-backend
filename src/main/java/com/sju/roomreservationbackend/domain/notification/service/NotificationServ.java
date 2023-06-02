@@ -21,6 +21,8 @@ public class NotificationServ {
         String title = reqDTO.getTitle();
         String body = reqDTO.getBody();
 
+        System.out.println("send notification: " + title + ", " + body);
+
         if (reqDTO.getUserIds().size() == 1) {
             UserProfile sendSubjectUser = userProfileCrudServ.fetchUserProfileById(reqDTO.getUserIds().get(0));
             notificationPushService.sendToSingleClient(title, body, sendSubjectUser);
