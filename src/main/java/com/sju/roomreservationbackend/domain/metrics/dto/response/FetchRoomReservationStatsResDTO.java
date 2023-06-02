@@ -14,12 +14,15 @@ public class FetchRoomReservationStatsResDTO extends GeneralResDTO {
     private Integer noShowCnt;
     private Double noShowRate;
 
+    private Double loadRate;
+
     private List<RoomStat> roomStats;
 
     public void setRoomStat(RoomStat roomStat) {
         this.revCnt = roomStat.getRevCnt();
         this.noShowCnt = roomStat.getNoShowCnt();
         this.noShowRate = roomStat.getNoShowRate();
+        this.loadRate = roomStat.getLoadRate();
     }
 
     public void setRoomStats(List<RoomStat> roomStats) {
