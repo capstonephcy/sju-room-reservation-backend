@@ -37,4 +37,6 @@ public class UpdateRoomReqDTO {
     @Max(value = 24, message = "valid.room.time.size")
     @Min(value = 1, message = "valid.room.time.size")
     private Integer maxLooseTimeForStud;
+
+    private String congestion;
 }

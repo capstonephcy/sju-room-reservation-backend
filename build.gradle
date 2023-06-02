@@ -90,5 +90,8 @@ jib {
         tags = ["latest"]
     }
     container {
+        environment = [
+                'TZ': 'Asia/Seoul'
+        ]
     }
 }

@@ -45,13 +45,13 @@ SOURCE /home/schema-mysql.sql;
 5. API 서버 실행
 
 ```bash
-docker run wlghks0314/sju-capstone-room-reservation-server --name capstone6-apiserver -d -p 8282:8282 --link capstone6-mysql:mysql -v $(pwd)/app/data:/app/data:rw
+docker run --name capstone6-apiserver -d -p 8282:8282 --link capstone6-mysql:mysql -v $(pwd)/app/data:/app/data:rw wlghks0314/sju-capstone-room-reservation-server
 ```
 
 6. Nginx 서버 실행
 
 ```bash
-docker run nginx --name capstone6-nginx -d -p 80:80 --link capstone6-apiserver:wlghks0314/sju-capstone-room-reservation-server -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf -v $(pwd)/web/frontend:/var/www/capstone/frontend
+docker run --name capstone6-nginx -d -p 80:80 --link capstone6-apiserver:wlghks0314/sju-capstone-room-reservation-server -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf -v $(pwd)/nginx/conf.d:/etc/nginx/conf.d -v $(pwd)/web/frontend:/var/www/capstone/frontend nginx
 ```
 
 ### 서버 접속 가이드

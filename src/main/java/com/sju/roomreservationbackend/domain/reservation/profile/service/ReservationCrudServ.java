@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -143,15 +144,9 @@ public class ReservationCrudServ extends ReservationLogicServ {
         return reservationRepo.findAllByRoomAndDate(room, date);
     }
 
-    public List<Reservation> fetchReservationByRoomAndDateAndTimeLeft(Room room, LocalDate date, LocalTime timeBeforeStartTime, LocalTime timeAfterStartTime) {
-        // get reservation which date is today and reservation time range is [n] minutes later from now
-        List<Reservation> reservations = reservationRepo.findByRoomAndDateAndStartGreaterThanEqualAndStartLessThanEqual(room, date, timeBeforeStartTime, timeAfterStartTime);
-
-        // then, to prevent multiple notification sent and only send notification at first [n] minutes left before start time,
-        // check if current time has passed reservation start time + 1 minute, which is batch job interval
-        reservations.removeIf(reservation -> timeAfterStartTime.isAfter(reservation.getStart().plusMinutes(1)));
-
-        return reservations;
+    public List<Reservation> fetchReservationByRoomAndDateAndTimeLeft(Room room, LocalDate date, LocalTime time) {
+        System.out.println("get reservations for notification: " + room.getId() + " " + date + " " + time);
+        return reservationRepo.findByRoomAndDateAndStart(room, date, time.truncatedTo(ChronoUnit.MINUTES));
     }
 
     @Transactional

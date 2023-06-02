@@ -4,6 +4,7 @@ import com.sju.roomreservationbackend.common.storage.StorageService;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.CreateRoomReqDTO;
 import com.sju.roomreservationbackend.domain.room.profile.dto.request.UpdateRoomReqDTO;
 import com.sju.roomreservationbackend.domain.room.profile.entity.Room;
+import com.sju.roomreservationbackend.domain.room.profile.entity.RoomCongestion;
 import com.sju.roomreservationbackend.domain.room.profile.repository.RoomRepo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +44,7 @@ public class RoomCrudServ extends RoomLogicServ {
                 .maxNormalTimeForStud(reqDTO.getMaxNormalTimeForStud())
                 .maxLooseTimeForGrad(reqDTO.getMaxLooseTimeForGrad())
                 .maxLooseTimeForStud(reqDTO.getMaxLooseTimeForStud())
+                .congestion(RoomCongestion.MEDIUM)
                 .build();
 
         room = roomRepo.save(room);
@@ -85,6 +87,7 @@ public class RoomCrudServ extends RoomLogicServ {
         room.setMaxNormalTimeForStud(reqDTO.getMaxNormalTimeForStud() == null ? room.getMaxLooseTimeForStud() : reqDTO.getMaxNormalTimeForStud());
         room.setMaxLooseTimeForGrad(reqDTO.getMaxLooseTimeForGrad() == null ? room.getMaxNormalTimeForGrad() : reqDTO.getMaxLooseTimeForGrad());
         room.setMaxLooseTimeForStud(reqDTO.getMaxLooseTimeForStud() == null ? room.getMaxNormalTimeForStud() : reqDTO.getMaxLooseTimeForStud());
+        room.setCongestion(reqDTO.getCongestion() == null ? room.getCongestion() : RoomCongestion.valueOf(reqDTO.getCongestion()));
 
         return room;
     }
